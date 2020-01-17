@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,21 +71,13 @@ public class LoginActivity extends AppCompatActivity {
                                 if (right_userID.equals(userID) && right_userPassword.equals(userPassword)) {
                                     SaveSharedPreference.setUserID(LoginActivity.this, userID);
                                     login = true;
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                    dialog = builder.setMessage("로그인에 성공했습니다")
-                                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                    //Intent intent1 = new Intent(LoginActivity.this, LockScreenActivity.class);
-                                                    intent.putExtra("userID", userID);
-                                                    //intent1.putExtra("userID", userID);
-                                                    LoginActivity.this.startActivity(intent);
-                                                    finish();
-                                                }
-                                            })
-                                            .create();
-                                    dialog.show();
+                                    Toast.makeText(LoginActivity.this, "로그인에 성공했습니다", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    //Intent intent1 = new Intent(LoginActivity.this, LockScreenActivity.class);
+                                    intent.putExtra("userID", userID);
+                                    //intent1.putExtra("userID", userID);
+                                    LoginActivity.this.startActivity(intent);
+                                    finish();
                                     break;
                                 }
                                 else {i++;}

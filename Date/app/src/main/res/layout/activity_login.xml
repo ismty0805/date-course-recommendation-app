@@ -24,16 +24,16 @@
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_launcher_foreground"
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="인공지능 분리수거 플랫폼"
+                android:layout_marginTop="10dp"
+                android:text="오늘의 데이트 장소"
                 android:textColor="#ffffff"
                 android:textSize="25dp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
