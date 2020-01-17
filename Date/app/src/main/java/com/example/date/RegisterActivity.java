@@ -18,10 +18,12 @@ import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -59,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
     private Bitmap sendBitmap;
+    private String location;
 
 
     @Override
@@ -73,6 +76,30 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText nameText = findViewById(R.id.nameText);
         final ImageButton imageButton = findViewById(R.id.userImage);
         final Button validateButton = findViewById(R.id.validateButton);
+        final Spinner spinner = findViewById(R.id.location_spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        location = null;
+                    case 1:
+                        //경기
+                        location = "경기";
+                    case 2:
+                        //서울
+                        location = "서울";
+                    case 3:
+                        //대전
+                        location = "대전";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String userPassword = passwordText.getText().toString();
                 String name = nameText.getText().toString();
                 String userEmail = emailText.getText().toString();
+                String userLocation = location;
 
 
                 //ID 중복체크를 했는지 확인함
@@ -169,6 +197,14 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(location==null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("지역을 선택해주세요")
+                            .setNegativeButton("OK", null)
+                            .create();
+                    dialog.show();
+                    return;
+                }
                 //회원가입 시작
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
 
@@ -178,11 +214,10 @@ public class RegisterActivity extends AppCompatActivity {
                             //JSONArray jsonResponse = new JSONArray(response);
                             //String success = jsonResponse.toString();
                             if(validate){//사용할 수 있는 아이디라면
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("Register Your ID")
-                                        .setPositiveButton("OK", yesButtonClickListener)
-                                        .create();
-                                dialog.show();
+                                Toast.makeText(RegisterActivity.this, "회원가입 성공", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                RegisterActivity.this.startActivity(intent);
+                                finish();//액티비티를 종료시킴(회원등록 창을 닫음)
 
                             }else{//사용할 수 없는 아이디라면
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
@@ -200,7 +235,7 @@ public class RegisterActivity extends AppCompatActivity {
                 };//Response.Listener 완료
 
                 //Volley 라이브러리를 이용해서 실제 서버와 통신을 구현하는 부분
-                RegisterRequest registerRequest = new RegisterRequest(userImg, userID, userPassword, name, userEmail, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(userImg, userID, userPassword, name, userEmail, userLocation, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
 
