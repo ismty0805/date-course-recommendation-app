@@ -54,8 +54,8 @@ public class HomeFragment extends Fragment {
         desireRecyclerView = root.findViewById(R.id.desireRecyclerView);
         layoutManager = new GridLayoutManager(getActivity(), 2);
         adapter = new DesireRecyclerAdapter(desires, inflater, getActivity());
-        desireRecyclerView.setLayoutManager(layoutManager);
         desireRecyclerView.setAdapter(adapter);
+        desireRecyclerView.setLayoutManager(layoutManager);
 
 
         return root;

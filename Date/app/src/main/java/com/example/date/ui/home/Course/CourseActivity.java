@@ -11,11 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CourseActivity extends AppCompatActivity {
 
     private ArrayList<View> views;
     private CoursePagerAdapter coursePagerAdapter;
+
+    private String[] arrSpots = {"cafe", "bob", "movie"};
+    private ArrayList<String> tempSpots = new ArrayList(Arrays.asList(arrSpots));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,7 @@ public class CourseActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         views = new ArrayList<>();
 
-        coursePagerAdapter = new CoursePagerAdapter(views, this);
+        coursePagerAdapter = new CoursePagerAdapter(tempSpots, this);
         viewPager.setAdapter(coursePagerAdapter);
         tabs.setupWithViewPager(viewPager);
 

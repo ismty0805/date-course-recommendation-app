@@ -37,7 +37,6 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
     @Override
     public DesireHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_desire, parent, false);
-        Log.d("onCreateViewHolder", "logged");
         return new DesireHolder(view);
     }
 
@@ -47,7 +46,6 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
         final String text = desires.get(position);
         holder.desireText.setText(text);
         holder.desireImage.setImageResource(R.mipmap.ic_launcher);
-        Log.d("Adapter", text);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
