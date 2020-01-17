@@ -3,6 +3,7 @@ package com.example.date.ui.home;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,47 +18,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.date.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HomeFragment extends Fragment {
 
     // temporal recyclerview input
-    private ArrayList<String> desires;
     private String[] arrDesire = {"a", "b", "c", "d", "e", "f"};
+    private ArrayList<String> desires = new ArrayList(Arrays.asList(arrDesire));
 
     private LayoutInflater inflater;
     private GridLayoutManager layoutManager;
+    private DesireRecyclerAdapter adapter;
+    private RecyclerView desireRecyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
-        Spinner spinner = (Spinner)v.findViewById(R.id.timeSpinner);
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        Spinner spinner = (Spinner) root.findViewById(R.id.timeSpinner);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
-                    case 0:
-                        //10시
-                    case 1:
-                        //11시
-                    case 2:
-                        //12시
-                    case 3:
-                        //13시
-                    case 4:
-                        //14시
-                    case 5:
-                        //15시
-                    case 6:
-                        //16시
-                    case 7:
-                        //17시
-                    case 8:
-                        //18시
-                    case 9:
-                        //19시
-                    case 10:
-                        //20시
+                    default:
+                        break;
                 }
             }
 
@@ -67,11 +51,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        RecyclerView desireRecyclerView = getActivity().findViewById(R.id.desireRecyclerView);
-        layoutManager = new GridLayoutManager(getContext(), 2);
-        inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        desireRecyclerView = root.findViewById(R.id.desireRecyclerView);
+        layoutManager = new GridLayoutManager(getActivity(), 2);
+        adapter = new DesireRecyclerAdapter(desires, inflater, getActivity());
+        desireRecyclerView.setAdapter(adapter);
+        desireRecyclerView.setLayoutManager(layoutManager);
 
 
-        return v;
+        return root;
     }
 }
