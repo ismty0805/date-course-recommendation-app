@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -70,21 +71,27 @@ public class RegisterActivity extends AppCompatActivity {
         final ImageButton imageButton = findViewById(R.id.userImage);
         final Button validateButton = findViewById(R.id.validateButton);
         final Spinner spinner = findViewById(R.id.location_spinner);
+        final Button registerButton = findViewById(R.id.registerButton);
+        registerButton.setClickable(true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:
                         location = null;
+                        break;
                     case 1:
                         //경기
                         location = "경기";
+                        break;
                     case 2:
                         //서울
                         location = "서울";
+                        break;
                     case 3:
                         //대전
                         location = "대전";
+                        break;
                 }
             }
 
@@ -156,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         //회원 가입 버튼이 눌렸을때
-        Button registerButton = findViewById(R.id.registerButton);
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,6 +205,7 @@ public class RegisterActivity extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
+                Log.d("location", ""+location);
                 //회원가입 시작
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
 
@@ -231,6 +239,7 @@ public class RegisterActivity extends AppCompatActivity {
                 RegisterRequest registerRequest = new RegisterRequest(userImg, userID, userPassword, name, userEmail, userLocation, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
+                registerButton.setClickable(false);
 
             }
         });

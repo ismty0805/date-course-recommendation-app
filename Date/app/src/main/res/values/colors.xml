@@ -7,4 +7,7 @@
     <color name="colorGray">#C5C6B6</color>
     <color name="colorWarning">#ED00CB</color>
     <color name="colorLock">#1c9f6e</color>
+    <color name="colorRed">#cc0000</color>
+    <color name="colorYellow">#D9D919</color>
+    <color name="colorGreen">#32CD32</color>
 </resources>

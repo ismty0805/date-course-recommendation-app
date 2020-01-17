@@ -14,13 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.date.LoginActivity;
+import com.example.date.ui.account.LoginActivity;
 import com.example.date.R;
-import com.example.date.SaveSharedPreference;
+import com.example.date.ui.account.SaveSharedPreference;
 
 public class NotificationsFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
