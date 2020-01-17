@@ -13,11 +13,6 @@
             android:name=".ui.home.Course.CourseActivity"
             android:label="@string/title_activity_date_course"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
