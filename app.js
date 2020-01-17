@@ -24,7 +24,8 @@ var loginSchema = new Schema_login({
   userID : {type:String}, 
   userPassword : String,
   email : String,
-  location: String
+  location: String,
+  level: {type:String, default: 1}
 });
 
 var Login = mongoose.model("Login", loginSchema);
@@ -65,21 +66,25 @@ app.get('/personalInfo/:userID', function(req, res, next){
     });
 });
 
-// app.put('/personalInfo/:userID', function(req, res, next) {
+app.put('/changeArea/:userID', function(req, res, next){
+    Login.update({"userID":req.params.userID}, {"location": req.body.location}, function(error, login){
+        if(error){
+            return res.json(error);
+        }
+        // console.log(""+req.params.location+"\n"+req.body.location+"\n"+req.params.userID+"\n"+req.body.userID);
+        return res.json(login);
+    });
+});
 
-//   const json = req.body.points
-//   const obj = JSON.parse(json);
-//   Login.findOneAndUpdate({userID:req.body.userID}, 
-//     {$push:{points:{type:obj.type, date:obj.date, point:obj.point}}},{new:true}, function (error, login){
-//       if (error) {
-//         console.log("req---" + req.body.points);
-//         return res.json(error);
-//       }
-//       console.log("req---" + req.body.points);
-//       console.log("req---userID-- " + req.body.userID);
-//       return res.json(login);
-//     });    
-// });
+app.put('/changeLevel/:userID', function(req, res, next){
+    Login.update({"userID":req.params.userID}, {"level": req.body.level}, function(error, login){
+        if(error){
+            return res.json(error);
+        }
+        // console.log(""+req.params.location+"\n"+req.body.location+"\n"+req.params.userID+"\n"+req.body.userID);
+        return res.json(login);
+    });
+});
 
 app.post('/logins', function(req, res, next){
   var userImg = req.body.userImg;
@@ -88,13 +93,15 @@ app.post('/logins', function(req, res, next){
   var name = req.body.name;
   var email = req.body.email;
   var location = req.body.location;
+  var level= req.body.level;
   var login = Login({
     userImg : userImg,
     userID : userID,
     userPassword : userPassword,
     name : name,
     email : email,
-    location : location
+    location : location,
+    level : level
   });
 
   login.save(function(err){
