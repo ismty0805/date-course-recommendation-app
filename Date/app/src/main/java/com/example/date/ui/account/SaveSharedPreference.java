@@ -1,4 +1,4 @@
-package com.example.date;
+package com.example.date.ui.account;
 
 import android.content.Context;
 import android.content.SharedPreferences;

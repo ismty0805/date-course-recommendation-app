@@ -1,29 +1,36 @@
 package com.example.date.ui.home;
 
-import android.content.ClipData;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.date.R;
 
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
 
+    // temporal recyclerview input
+    private ArrayList<String> desires;
+    private String[] arrDesire = {"a", "b", "c", "d", "e", "f"};
+
+    private LayoutInflater inflater;
+    private GridLayoutManager layoutManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-        Spinner spinner = (Spinner)v.findViewById(R.id.spinner);
+        Spinner spinner = (Spinner)v.findViewById(R.id.timeSpinner);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -60,6 +67,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        RecyclerView desireRecyclerView = getActivity().findViewById(R.id.desireRecyclerView);
+        layoutManager = new GridLayoutManager(getContext(), 2);
+        inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
         return v;

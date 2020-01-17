@@ -1,4 +1,4 @@
-package com.example.date;
+package com.example.date.ui.account;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,11 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.example.date.MainActivity;
+import com.example.date.R;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
