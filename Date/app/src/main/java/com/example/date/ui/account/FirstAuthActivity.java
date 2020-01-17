@@ -1,10 +1,12 @@
-package com.example.date;
+package com.example.date.ui.account;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.date.MainActivity;
+import com.example.date.R;
 
 
 public class FirstAuthActivity extends AppCompatActivity {
