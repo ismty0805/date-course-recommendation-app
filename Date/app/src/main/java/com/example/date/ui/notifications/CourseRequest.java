@@ -1,6 +1,8 @@
 package com.example.date.ui.notifications;
 
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -18,10 +20,12 @@ public class CourseRequest extends StringRequest {
 
     public CourseRequest(String city, String level, String purpose, Response.Listener<String> listener) {
         super(Method.PUT, URL, listener, null);
+
         parameters = new HashMap<>();
         parameters.put("city", city);
         parameters.put("level", level);
         parameters.put("purpose", purpose);
+        Log.d("request", ""+parameters);
     }
 
     @Override

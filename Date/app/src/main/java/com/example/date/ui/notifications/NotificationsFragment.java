@@ -3,6 +3,7 @@ package com.example.date.ui.notifications;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.date.ui.account.LoginActivity;
 import com.example.date.R;
 import com.example.date.ui.account.SaveSharedPreference;
+import com.example.date.ui.home.Course.CourseActivity;
+import com.example.date.ui.home.CourseInformation;
 import com.example.date.ui.mypage.PersonalInfoRequest;
 
 import org.json.JSONArray;
@@ -32,9 +35,9 @@ public class NotificationsFragment extends Fragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             final ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_notifications, container, false);
-        Button logoutButton = v.findViewById(R.id.logOut);
+        final Button logoutButton = v.findViewById(R.id.logOut);
         logoutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -45,20 +48,53 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONArray jsonResponse = new JSONArray(response);
-                    ArrayList<String> latitudeArray = (ArrayList<String>) jsonResponse.getJSONObject(0).get("latitudeArray");
-                    ArrayList<String> longitudeArray = (ArrayList<String>) jsonResponse.getJSONObject(0).get("longitudeArray");
+                    Log.d("response", ""+response);
+                    JSONArray list1 = jsonResponse.getJSONObject(0).getJSONArray("latitudeArray");
+                    JSONArray list2 = jsonResponse.getJSONObject(0).getJSONArray("longitudeArray");
+                    ArrayList<String> latitudeList = new ArrayList<String>();
+                    ArrayList<String> longitudeList = new ArrayList<String>();
+                    if (list1 != null) {
+                        int len = list1.length();
+                        for (int i=0;i<len;i++){
+                            latitudeList.add(list1.get(i).toString());
+                        }
+                    }
+                    if (list2 != null) {
+                        int len = list2.length();
+                        for (int i=0;i<len;i++){
+                            longitudeList.add(list2.get(i).toString());
+                        }
+                    }
+                    String city = jsonResponse.getJSONObject(0).getString("city");
+                    String purpose = jsonResponse.getJSONObject(0).getString("purpose");
+                    String level = jsonResponse.getJSONObject(0).getString("level");
+                    Integer courseLevel = 0;
+                    if(level.equals("1")) courseLevel = 1;
+                    else if(level.equals("2")) courseLevel = 2;
+                    else if(level.equals("3")) courseLevel = 3;
+                    CourseInformation courseInformation = new CourseInformation();
+                    courseInformation.setCity(city);
+                    courseInformation.setPurpose(purpose);
+                    courseInformation.setLevel(courseLevel);
+                    courseInformation.setLatitudeList(latitudeList);
+                    courseInformation.setLongitudeList(longitudeList);
+                    Log.d("result", ""+latitudeList + longitudeList);
+                    Intent intent = new Intent(getContext(), CourseActivity.class);
+                    intent.putExtra("courseInformation", courseInformation);
+//                    startActivity(intent);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
 
             }
         };
-        CourseRequest courseRequest = new CourseRequest("대전", "3", "CONFLICT", responseListener);
+        CourseRequest courseRequest = new CourseRequest("seoul", "3", "rest", responseListener);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(courseRequest);
 
