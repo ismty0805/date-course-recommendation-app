@@ -1,14 +1,18 @@
 package com.example.date.ui.home;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CourseInformation implements Serializable {
-    private ArrayList<String> latitudeList;
-    private ArrayList<String> longitudeList;
-    private int level;
-    private String city;
-    private String purpose;
+    private ArrayList<String> latitudeList = new ArrayList<>();
+    private ArrayList<String> longitudeList = new ArrayList<>();
+    private ArrayList<String> placeList = new ArrayList<>();
+    private int level = 1;
+    private String city = "";
+    private String purpose = "";
+
+    public CourseInformation() {}
 
     // setters
     public void setLatitudeList(ArrayList<String> latitudeList) {
@@ -16,6 +20,9 @@ public class CourseInformation implements Serializable {
     }
     public void setLongitudeList(ArrayList<String> longitudeList) {
         this.longitudeList = longitudeList;
+    }
+    public void setPlaceList(ArrayList<String> placeList) {
+        this.placeList = placeList;
     }
     public void setLevel(int level) {
         this.level = level;
@@ -33,6 +40,9 @@ public class CourseInformation implements Serializable {
     }
     public ArrayList<String> getLongitudeList() {
         return longitudeList;
+    }
+    public ArrayList<String> getPlaceList() {
+        return placeList;
     }
     public int getLevel() {
         return level;
