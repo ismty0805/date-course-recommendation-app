@@ -21,6 +21,8 @@ import com.example.date.R;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
+
 public class CoursePagerAdapter extends PagerAdapter {
 
 //    private static final int[] TAB_TITLES = new int[]{R.string.course_tab_text_1, R.string.course_tab_text_2};

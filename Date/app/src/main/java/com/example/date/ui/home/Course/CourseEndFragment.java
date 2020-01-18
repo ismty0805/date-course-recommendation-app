@@ -37,5 +37,7 @@ public class CourseEndFragment extends Fragment {
         textView.setText("course tip");
         return textView;
     }
+
+
 }
 
