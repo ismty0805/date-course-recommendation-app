@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class HomeFragment extends Fragment {
 
     // temporal recyclerview input
-    private String[] arrDesire = {"a", "b", "c", "d", "e", "f"};
+    private String[] arrDesire = {"갈등", "진도", "휴식", "액티비티", "공식", "여행", "이별"};
     private ArrayList<String> desires = new ArrayList(Arrays.asList(arrDesire));
 
     private LayoutInflater inflater;

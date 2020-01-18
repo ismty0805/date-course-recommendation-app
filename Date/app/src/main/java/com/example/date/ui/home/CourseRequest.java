@@ -1,4 +1,4 @@
-package com.example.date.ui.notifications;
+package com.example.date.ui.home;
 
 
 import android.util.Log;

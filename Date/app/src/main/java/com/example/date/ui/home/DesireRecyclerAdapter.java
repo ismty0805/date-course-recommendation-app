@@ -17,9 +17,10 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.date.R;
 import com.example.date.ui.home.Course.CourseActivity;
-import com.example.date.ui.notifications.CourseRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -61,46 +62,20 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
                     public void onResponse(String response) {
                         try {
                             JSONArray jsonResponse = new JSONArray(response);
-                            Log.d("response", ""+response);
-                            JSONArray list1 = jsonResponse.getJSONObject(0).getJSONArray("latitudeArray");
-                            JSONArray list2 = jsonResponse.getJSONObject(0).getJSONArray("longitudeArray");
-                            ArrayList<String> latitudeList = new ArrayList<String>();
-                            ArrayList<String> longitudeList = new ArrayList<String>();
-                            if (list1 != null) {
-                                int len = list1.length();
-                                for (int i=0;i<len;i++){
-                                    latitudeList.add(list1.get(i).toString());
-                                }
-                            }
-                            if (list2 != null) {
-                                int len = list2.length();
-                                for (int i=0;i<len;i++){
-                                    longitudeList.add(list2.get(i).toString());
-                                }
-                            }
-                            String city = jsonResponse.getJSONObject(0).getString("city");
-                            String purpose = jsonResponse.getJSONObject(0).getString("purpose");
-                            String level = jsonResponse.getJSONObject(0).getString("level");
-                            Integer courseLevel = 0;
-                            if(level.equals("1")) courseLevel = 1;
-                            else if(level.equals("2")) courseLevel = 2;
-                            else if(level.equals("3")) courseLevel = 3;
                             CourseInformation courseInformation = new CourseInformation();
-                            courseInformation.setCity(city);
-                            courseInformation.setPurpose(purpose);
-                            courseInformation.setLevel(courseLevel);
-                            courseInformation.setLatitudeList(latitudeList);
-                            courseInformation.setLongitudeList(longitudeList);
+                            setCourseInfoWithJson(jsonResponse, courseInformation);
+
                             Intent intent = new Intent(mContext, CourseActivity.class);
                             intent.putExtra("courseInformation", courseInformation);
                             mContext.startActivity(intent);
+
                         }catch (Exception e){
                             e.printStackTrace();
                         }
 
                     }
                 };
-                CourseRequest courseRequest = new CourseRequest("seoul", "3", "rest", responseListener);
+                CourseRequest courseRequest = new CourseRequest("seoul", "3", text, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(mContext);
                 queue.add(courseRequest);
             }
@@ -118,4 +93,53 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
             desireText = (TextView) itemView.findViewById(R.id.desireItemText);
         }
     }
+
+    /*---------------------------------------- helpers -------------------------------------------*/
+    public void setCourseInfoWithJson(JSONArray jsonArray, CourseInformation courseInformation) {
+        try {
+            for (int i=0; i<jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                JSONArray latList = jsonObject.getJSONArray("latitudeArray");
+                JSONArray lngList = jsonObject.getJSONArray("longitudeArray");
+                JSONArray placeList = jsonObject.getJSONArray("placeArray");
+
+                ArrayList<String> latitudes = new ArrayList<>();
+                ArrayList<String> longitudes = new ArrayList<>();
+                ArrayList<String> places = new ArrayList<>();
+
+                if (latList != null) {
+                    int len = latList.length();
+                    for (int j=0;j<len;j++){
+                        latitudes.add(latList.get(j).toString());
+                    }
+                }
+                if (lngList != null) {
+                    int len = lngList.length();
+                    for (int k=0;k<len;k++){
+                        longitudes.add(lngList.get(k).toString());
+                    }
+                }
+                if (placeList != null) {
+                    int len = placeList.length();
+                    for (int l=0;l<len;l++){
+                        places.add(placeList.get(l).toString());
+                    }
+                }
+
+                String city = jsonObject.getString("city");
+                String purpose = jsonObject.getString("purpose");
+                int level = Integer.valueOf(jsonObject.getString("level"));
+
+                courseInformation.setCity(city);
+                courseInformation.setPurpose(purpose);
+                courseInformation.setLevel(level);
+                courseInformation.setLatitudeList(latitudes);
+                courseInformation.setLongitudeList(longitudes);
+                courseInformation.setLongitudeList(places);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
