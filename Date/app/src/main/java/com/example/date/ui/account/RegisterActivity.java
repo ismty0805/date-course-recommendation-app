@@ -81,16 +81,20 @@ public class RegisterActivity extends AppCompatActivity {
                         location = null;
                         break;
                     case 1:
-                        //경기
-                        location = "경기";
-                        break;
-                    case 2:
                         //서울
                         location = "서울";
+                        break;
+                    case 2:
+                        //제주
+                        location = "제주";
                         break;
                     case 3:
                         //대전
                         location = "대전";
+                        break;
+                    case 4:
+                        //부산
+                        location = "부산";
                         break;
                 }
             }

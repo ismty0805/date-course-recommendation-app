@@ -39,11 +39,14 @@ public class MyPageFragment extends Fragment {
     private CustomSeekBar seekBar;
     private ArrayList<ProgressItem> progressItemArrayList;
     private ProgressItem mProgressItem;
+    private Button locationBtn;
     private float totalSpan = 1500;
     private float redSpan = 500;
     private float yellowSpan = 500;
     private float greenSpan = 500;
-    private int level;
+    private String level;
+    private String userId;
+    private CustomDialog customDialog;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,37 +57,20 @@ public class MyPageFragment extends Fragment {
         final ImageView imageView = v.findViewById(R.id.imageView);
         final TextView nameText = v.findViewById(R.id.name);
         final TextView emailText = v.findViewById(R.id.email);
-        String userId = intent.getStringExtra("userID");
-        LinearLayout profileLayout = v.findViewById(R.id.profileLayout);
-        Log.d("width", ""+profileLayout.getWidth());
-        ViewGroup.LayoutParams params = profileLayout.getLayoutParams();
-        params.height = profileLayout.getWidth();
-        profileLayout.setLayoutParams(params);
+        locationBtn = v.findViewById(R.id.locationBtn);
+        userId = intent.getStringExtra("userID");
         seekBar = ((CustomSeekBar) v.findViewById(R.id.customSeekBar));
         initDataToSeekbar();
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             private int startProgress;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress<33){
-                    level = 1;
-                    Toast.makeText(container.getContext(),"연애 단계 1단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
-                }
-                else if(progress<66){
-                    level = 2;
-                    Toast.makeText(container.getContext(),"연애 단계 2단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    level = 3;
-                    Toast.makeText(container.getContext(),"연애 단계 3단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 startProgress = seekBar.getProgress();
             }
-
             @Override
             public void onStopTrackingTouch(final SeekBar seekBar) {
                 if((seekBar.getProgress()>66) && startProgress<=66){
@@ -93,6 +79,20 @@ public class MyPageFragment extends Fragment {
                     builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            level = "3";
+                            Toast.makeText(container.getContext(),"연애 단계 3단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
+                            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            ChangeLevelRequest changeLevelRequest = new ChangeLevelRequest(userId, level, responseListener);
+                            RequestQueue queue = Volley.newRequestQueue(getActivity());
+                            queue.add(changeLevelRequest);
                         }
                     });
                     builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -105,8 +105,49 @@ public class MyPageFragment extends Fragment {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }
+                else if(seekBar.getProgress()<33 && startProgress>=33){
+                    level = "1";
+                    Toast.makeText(container.getContext(),"연애 단계 1단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    ChangeLevelRequest changeLevelRequest = new ChangeLevelRequest(userId, level, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    queue.add(changeLevelRequest);
+                }
+                else if ((seekBar.getProgress()<66)&&(seekBar.getProgress()>=33)&&((startProgress>66)||(startProgress<33))){
+                    level = "2";
+                    Toast.makeText(container.getContext(),"연애 단계 2단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    ChangeLevelRequest changeLevelRequest = new ChangeLevelRequest(userId, level, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    queue.add(changeLevelRequest);
+                }
             }
         });
+
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog = new CustomDialog(container.getContext(), seoulListener, jejuListener, daejeonListener, busanListener);
+                customDialog.show();
+            }
+        });
+
 
 
 
@@ -119,9 +160,21 @@ public class MyPageFragment extends Fragment {
                     Bitmap bitmap = getBitmapFromString(userImg);
                     String name = jsonResponse.getJSONObject(0).getString("name");
                     String email = jsonResponse.getJSONObject(0).getString("email");
+                    String location = jsonResponse.getJSONObject(0).getString("location");
+                    String level = jsonResponse.getJSONObject(0).getString("level");
                     imageView.setImageBitmap(bitmap);
                     nameText.setText(name);
                     emailText.setText(email);
+                    if(level.equals("1")) {
+                        seekBar.setProgress(16);
+                    }
+                    if(level.equals("2")) {
+                        seekBar.setProgress(49);
+                    }
+                    if(level.equals("3")) {
+                        seekBar.setProgress(82);
+                    }
+                    locationBtn.setText("관심지역: "+location);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -131,8 +184,74 @@ public class MyPageFragment extends Fragment {
         PersonalInfoRequest personalInfoRequest = new PersonalInfoRequest(userId, responseListener);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(personalInfoRequest);
+
+
+
         return v;
     }
+
+    private View.OnClickListener seoulListener = new View.OnClickListener(){
+        public void onClick(View v){
+            Toast.makeText(getContext(), "관심지역이 서울로 설정되었습니다", Toast.LENGTH_SHORT).show();
+            locationBtn.setText("관심지역: "+"서울");
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                }
+            };
+            ChangeAreaRequest changeAreaRequest = new ChangeAreaRequest(userId, "서울", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(changeAreaRequest);
+            customDialog.dismiss();
+        }
+    };
+    private View.OnClickListener jejuListener = new View.OnClickListener(){
+        public void onClick(View v){
+            Toast.makeText(getContext(), "관심지역이 제주로 설정되었습니다", Toast.LENGTH_SHORT).show();
+            locationBtn.setText("관심지역: "+"제주");
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                }
+            };
+            ChangeAreaRequest changeAreaRequest = new ChangeAreaRequest(userId, "제주", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(changeAreaRequest);
+            customDialog.dismiss();
+        }
+    };
+    private View.OnClickListener daejeonListener = new View.OnClickListener(){
+        public void onClick(View v){
+            Toast.makeText(getContext(), "관심지역이 대전으로 설정되었습니다", Toast.LENGTH_SHORT).show();
+            locationBtn.setText("관심지역: "+"대전");
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                }
+            };
+            ChangeAreaRequest changeAreaRequest = new ChangeAreaRequest(userId, "대전", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(changeAreaRequest);
+            customDialog.dismiss();
+        }
+    };
+    private View.OnClickListener busanListener = new View.OnClickListener(){
+        public void onClick(View v){
+            Toast.makeText(getContext(), "관심지역이 부산으로 설정되었습니다", Toast.LENGTH_SHORT).show();
+            locationBtn.setText("관심지역: "+"부산");
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                }
+            };
+            ChangeAreaRequest changeAreaRequest = new ChangeAreaRequest(userId, "부산", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(changeAreaRequest);
+            customDialog.dismiss();
+        }
+    };
+
+
     private Bitmap getBitmapFromString(String string){
         String[] bytevalues = string.substring(1, string.length() -1).split(",");
         byte[] bytes = new byte[bytevalues.length];

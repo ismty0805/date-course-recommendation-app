@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 
@@ -13,11 +14,15 @@ import com.example.date.R;
 
 public class CustomDialog extends Dialog {
 
-    private Button mPositiveButton;
-    private Button mNegativeButton;
+    private ImageButton seoul;
+    private ImageButton jeju;
+    private ImageButton daejeon;
+    private ImageButton busan;
 
-    private View.OnClickListener mPositiveListener;
-    private View.OnClickListener mNegativeListener;
+    private View.OnClickListener seoulListener;
+    private View.OnClickListener jejuListener;
+    private View.OnClickListener daejeonListener;
+    private View.OnClickListener busanListener;
 
 
     @Override
@@ -33,18 +38,24 @@ public class CustomDialog extends Dialog {
         setContentView(R.layout.custom_dialog);
 
         //셋팅
-        mPositiveButton=(Button)findViewById(R.id.button);
-        mNegativeButton=(Button)findViewById(R.id.button2);
+        seoul = findViewById(R.id.seoul);
+        jeju = findViewById(R.id.jeju);
+        daejeon = findViewById(R.id.daejeon);
+        busan = findViewById(R.id.busan);
 
         //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
-        mPositiveButton.setOnClickListener(mPositiveListener);
-        mNegativeButton.setOnClickListener(mNegativeListener);
+        seoul.setOnClickListener(seoulListener);
+        jeju.setOnClickListener(jejuListener);
+        daejeon.setOnClickListener(daejeonListener);
+        busan.setOnClickListener(busanListener);
     }
 
     //생성자 생성
-    public CustomDialog(@NonNull Context context, View.OnClickListener positiveListener, View.OnClickListener negativeListener) {
+    public CustomDialog(@NonNull Context context, View.OnClickListener seoulListener, View.OnClickListener jejuListener, View.OnClickListener daejeonListener, View.OnClickListener busanListener) {
         super(context);
-        this.mPositiveListener = positiveListener;
-        this.mNegativeListener = negativeListener;
+        this.seoulListener = seoulListener;
+        this.jejuListener = jejuListener;
+        this.daejeonListener = daejeonListener;
+        this.busanListener = busanListener;
     }
 }
