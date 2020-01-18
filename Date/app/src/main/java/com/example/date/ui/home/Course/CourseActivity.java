@@ -30,8 +30,10 @@ public class CourseActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         views = new ArrayList<>();
 
-        coursePagerAdapter = new CoursePagerAdapter(tempSpots, this);
+        coursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
+        coursePagerAdapter.setSpots(tempSpots);
         viewPager.setAdapter(coursePagerAdapter);
+
         tabs.setupWithViewPager(viewPager);
 
 //        // adding page
