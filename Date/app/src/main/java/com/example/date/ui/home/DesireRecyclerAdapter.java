@@ -12,8 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.date.R;
 import com.example.date.ui.home.Course.CourseActivity;
+import com.example.date.ui.notifications.CourseRequest;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -50,11 +56,53 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, CourseActivity.class);
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonResponse = new JSONArray(response);
+                            Log.d("response", ""+response);
+                            JSONArray list1 = jsonResponse.getJSONObject(0).getJSONArray("latitudeArray");
+                            JSONArray list2 = jsonResponse.getJSONObject(0).getJSONArray("longitudeArray");
+                            ArrayList<String> latitudeList = new ArrayList<String>();
+                            ArrayList<String> longitudeList = new ArrayList<String>();
+                            if (list1 != null) {
+                                int len = list1.length();
+                                for (int i=0;i<len;i++){
+                                    latitudeList.add(list1.get(i).toString());
+                                }
+                            }
+                            if (list2 != null) {
+                                int len = list2.length();
+                                for (int i=0;i<len;i++){
+                                    longitudeList.add(list2.get(i).toString());
+                                }
+                            }
+                            String city = jsonResponse.getJSONObject(0).getString("city");
+                            String purpose = jsonResponse.getJSONObject(0).getString("purpose");
+                            String level = jsonResponse.getJSONObject(0).getString("level");
+                            Integer courseLevel = 0;
+                            if(level.equals("1")) courseLevel = 1;
+                            else if(level.equals("2")) courseLevel = 2;
+                            else if(level.equals("3")) courseLevel = 3;
+                            CourseInformation courseInformation = new CourseInformation();
+                            courseInformation.setCity(city);
+                            courseInformation.setPurpose(purpose);
+                            courseInformation.setLevel(courseLevel);
+                            courseInformation.setLatitudeList(latitudeList);
+                            courseInformation.setLongitudeList(longitudeList);
+                            Intent intent = new Intent(mContext, CourseActivity.class);
+                            intent.putExtra("courseInformation", courseInformation);
+                            mContext.startActivity(intent);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
 
-                // passing desire information
-                intent.putExtra("desire", text);
-                mContext.startActivity(intent);
+                    }
+                };
+                CourseRequest courseRequest = new CourseRequest("seoul", "3", "rest", responseListener);
+                RequestQueue queue = Volley.newRequestQueue(mContext);
+                queue.add(courseRequest);
             }
         });
     }

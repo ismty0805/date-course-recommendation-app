@@ -39,6 +39,9 @@
         <activity
             android:name=".ui.account.FirstAuthActivity"
             android:windowSoftInputMode="adjustPan" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBcen1ykX9JdO0-VtCi4DY3zfCZvCIziLA"/>
     </application>
 
 </manifest>
