@@ -13,6 +13,7 @@ import com.example.date.R;
 public class CourseEndFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private TextView textView;
 
     public static CourseStartFragment newInstance(int index) {
         CourseStartFragment fragment = new CourseStartFragment();
@@ -33,9 +34,9 @@ public class CourseEndFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_course_end, container, false);
 
-        TextView textView = (TextView) getActivity().findViewById(R.id.courseTip);
+        textView = (TextView) root.findViewById(R.id.courseTip);
         textView.setText("course tip");
-        return textView;
+        return root;
     }
 
 
