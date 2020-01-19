@@ -16,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.date.R;
+import com.example.date.ui.account.SaveSharedPreference;
 import com.example.date.ui.home.Course.CourseActivity;
 
 import org.json.JSONArray;
@@ -29,6 +30,8 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
     private ArrayList<String> desires;
     private LayoutInflater mInflater;
     private Context mContext;
+    private String level;
+    private String city;
 
     public DesireRecyclerAdapter(ArrayList<String> desires, LayoutInflater inflater, Context context) {
         this.desires = desires;
@@ -53,35 +56,32 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
         final String text = desires.get(position);
         holder.desireText.setText(text);
         holder.desireImage.setImageResource(R.mipmap.ic_launcher);
-
+        level = SaveSharedPreference.getLevel(mContext);
+        city = SaveSharedPreference.getCity(mContext);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Response.Listener<String> responseListener = new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONArray jsonResponse = new JSONArray(response);
-//                            CourseInformation courseInformation = new CourseInformation();
-//                            setCourseInfoWithJson(jsonResponse, courseInformation);
-//
-//                            Intent intent = new Intent(mContext, CourseActivity.class);
-//                            intent.putExtra("courseInformation", courseInformation);
-//                            mContext.startActivity(intent);
-//
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                };
-//                CourseRequest courseRequest = new CourseRequest("seoul", "3", text, responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(mContext);
-//                queue.add(courseRequest);
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonResponse = new JSONArray(response);
+                            CourseInformation courseInformation = new CourseInformation();
+                            setCourseInfoWithJson(jsonResponse, courseInformation);
 
-                // temporal startActivity()
-                Intent intent = new Intent(mContext, CourseActivity.class);
-                mContext.startActivity(intent);
+                            Intent intent = new Intent(mContext, CourseActivity.class);
+                            intent.putExtra("courseInformation", courseInformation);
+                            mContext.startActivity(intent);
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+                CourseRequest courseRequest = new CourseRequest(city, level, text, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(mContext);
+                queue.add(courseRequest);
             }
         });
     }
