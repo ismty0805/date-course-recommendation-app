@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.date.R;
@@ -21,12 +24,14 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.model.Place;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -43,10 +48,12 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
 
     private RecyclerView recyclerView;
     private CourseRecyclerAdapter adapter;
-    private ArrayList<Spot> spots;
+    private ArrayList<Place> spots;
+    private LinearLayoutManager layoutManager;
 
-    public static CourseStartFragment newInstance(int index) {
-        CourseStartFragment fragment = new CourseStartFragment();
+    public static CourseEndFragment newInstance(int index, ArrayList<Place> spots) {
+        CourseEndFragment fragment = new CourseEndFragment();
+        fragment.setSpots(spots);
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
@@ -73,29 +80,49 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
 
         View root = inflater.inflate(R.layout.fragment_course_end, container, false);
 
-        // temporal spots
-        spots = new ArrayList<>();
-        for (int i=0; i<3; i++) {
-            Spot spot = new Spot();
-            spot.setName("spot"+i);
-            spot.setLatitude("36.37"+i);
-            spot.setLongitude("127.36"+i);
-            spots.add(spot);
-        }
-
         mapView = (MapView) root.findViewById(R.id.map);
         mapView.getMapAsync(this);
-        makeMarker();
 
         recyclerView = root.findViewById(R.id.courseRecyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), 1));
         adapter = new CourseRecyclerAdapter(getContext());
         adapter.setSpots(spots);
+        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
 
         textView = (TextView) root.findViewById(R.id.courseTip);
         textView.setText("course tip");
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        mapView.onLowMemory();
+        super.onLowMemory();
+    }
+
+    /*--------------------------------- getter & setter ----------------------------------*/
+    public void setSpots(ArrayList<Place> spots) {
+        this.spots = spots;
     }
 
     /*-------------------------------------- map functions ---------------------------------------*/
@@ -137,13 +164,14 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void makeMarker() {
-        for (Spot spot : spots) {
-            LatLng location = new LatLng(Float.valueOf(spot.getLatitude()), Float.valueOf(spot.getLongitude()));
+        for (Place spot : spots) {
+            Log.d("asdf", ""+spot.getLatLng());
+//            LatLng location = new LatLng(Float.valueOf(spot.getLatitude()), Float.valueOf(spot.getLongitude()));
 
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(location);
+//            markerOptions.position(location);
             markerOptions.title(spot.getName());
-            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_home_black_24dp);
+            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.jeju);
             Bitmap b = bitmapdraw.getBitmap();
             Bitmap smallMarker = Bitmap.createScaledBitmap(b, 80, 80, false);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));

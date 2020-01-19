@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.date.R;
+import com.google.android.libraries.places.api.model.Place;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
 public class CoursePagerAdapter extends FragmentPagerAdapter {
 
 //    private static final int[] TAB_TITLES = new int[]{R.string.course_tab_text_1, R.string.course_tab_text_2};
-    private static ArrayList<String> spots = new ArrayList<>();
+    private static ArrayList<Place> spots = new ArrayList<>();
     private static ArrayList<View> views;
     private LayoutInflater inflater;
 
@@ -60,7 +61,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public void setSpots(ArrayList<String> spots) {
+    public void setSpots(ArrayList<Place> spots) {
         this.spots = spots;
     }
 //    @Override

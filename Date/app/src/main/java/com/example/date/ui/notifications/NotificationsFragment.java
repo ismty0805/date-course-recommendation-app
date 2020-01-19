@@ -25,9 +25,9 @@ import com.example.date.ui.account.SaveSharedPreference;
 import com.example.date.ui.home.Course.CourseActivity;
 import com.example.date.ui.home.CourseInformation;
 import com.example.date.ui.mypage.PersonalInfoRequest;
-import com.google.android.gms.location.places.GeoDataApi;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
+// import com.google.android.gms.location.places.GeoDataApi;
+// import com.google.android.gms.location.places.Place;
+// import com.google.android.gms.location.places.Places;
 
 import org.json.JSONArray;
 

@@ -10,11 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.date.R;
+import com.google.android.libraries.places.api.model.Place;
 
 import java.util.ArrayList;
 
 public class CourseRecyclerAdapter extends RecyclerView.Adapter<CourseRecyclerAdapter.SpotHolder> {
-    private ArrayList<Spot> spots = new ArrayList<>();
+    private ArrayList<Place> spots = new ArrayList<>();
     private Context context;
 
     CourseRecyclerAdapter(Context context) {
@@ -31,7 +32,7 @@ public class CourseRecyclerAdapter extends RecyclerView.Adapter<CourseRecyclerAd
 
     @Override
     public void onBindViewHolder(@NonNull SpotHolder holder, int position) {
-        final Spot spot = spots.get(position);
+        final Place spot = spots.get(position);
         holder.spotNameText.setText(spot.getName());
     }
 
@@ -40,7 +41,7 @@ public class CourseRecyclerAdapter extends RecyclerView.Adapter<CourseRecyclerAd
         return spots.size();
     }
 
-    public void setSpots(ArrayList<Spot> spots) {
+    public void setSpots(ArrayList<Place> spots) {
         this.spots = spots;
         notifyDataSetChanged();
     }
