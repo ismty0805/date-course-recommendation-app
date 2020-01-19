@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -39,7 +38,7 @@ public class CustomDialog extends Dialog {
 
         //셋팅
         seoul = findViewById(R.id.seoul);
-        jeju = findViewById(R.id.jeju);
+        jeju = findViewById(R.id.daegu);
         daejeon = findViewById(R.id.daejeon);
         busan = findViewById(R.id.busan);
 

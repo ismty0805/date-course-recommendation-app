@@ -25,7 +25,6 @@ public class FirstAuthActivity extends AppCompatActivity {
         } else {
             intent = new Intent(FirstAuthActivity.this, MainActivity.class);
             intent.putExtra("userID", SaveSharedPreference.getUserID(this));
-            intent.putExtra("isChecked", SaveSharedPreference.getSlide(this));
             startActivity(intent);
             this.finish();
         }

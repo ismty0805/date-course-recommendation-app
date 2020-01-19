@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.date.MainActivity;
 import com.example.date.R;
+import com.example.date.ui.account.SaveSharedPreference;
 
 import org.json.JSONArray;
 
@@ -60,6 +61,22 @@ public class MyPageFragment extends Fragment {
         locationBtn = v.findViewById(R.id.locationBtn);
         userId = intent.getStringExtra("userID");
         seekBar = ((CustomSeekBar) v.findViewById(R.id.customSeekBar));
+        imageView.setImageBitmap(getBitmapFromString(SaveSharedPreference.getImg(getContext())));
+        Log.d("name", SaveSharedPreference.getName(getContext()));
+        nameText.setText(SaveSharedPreference.getName(getContext()));
+        emailText.setText(SaveSharedPreference.getEmail(getContext()));
+        locationBtn.setText("관심지역: "+SaveSharedPreference.getCity(getContext()));
+        level = SaveSharedPreference.getLevel(getContext());
+        if(level.equals("1")){
+            seekBar.setProgress(16);
+        }
+        else if(level.equals("2")){
+            seekBar.setProgress(49);
+        }
+        else if(level.equals("3")){
+            seekBar.setProgress(82);
+        }
+
         initDataToSeekbar();
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             private int startProgress;
@@ -80,6 +97,7 @@ public class MyPageFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             level = "3";
+                            SaveSharedPreference.setLevel(getContext(), level);
                             Toast.makeText(container.getContext(),"연애 단계 3단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
                             Response.Listener<String> responseListener = new Response.Listener<String>() {
                                 @Override
@@ -107,6 +125,7 @@ public class MyPageFragment extends Fragment {
                 }
                 else if(seekBar.getProgress()<33 && startProgress>=33){
                     level = "1";
+                    SaveSharedPreference.setLevel(getContext(), level);
                     Toast.makeText(container.getContext(),"연애 단계 1단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
                         @Override
@@ -123,6 +142,7 @@ public class MyPageFragment extends Fragment {
                 }
                 else if ((seekBar.getProgress()<66)&&(seekBar.getProgress()>=33)&&((startProgress>66)||(startProgress<33))){
                     level = "2";
+                    SaveSharedPreference.setLevel(getContext(), level);
                     Toast.makeText(container.getContext(),"연애 단계 2단계로 설정되었습니다", Toast.LENGTH_SHORT).show();
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
                         @Override
@@ -143,49 +163,10 @@ public class MyPageFragment extends Fragment {
         locationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customDialog = new CustomDialog(container.getContext(), seoulListener, jejuListener, daejeonListener, busanListener);
+                customDialog = new CustomDialog(container.getContext(), seoulListener, daeguListener, daejeonListener, busanListener);
                 customDialog.show();
             }
         });
-
-
-
-
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonResponse = new JSONArray(response);
-                    String userImg = jsonResponse.getJSONObject(0).getString("userImg");
-                    Bitmap bitmap = getBitmapFromString(userImg);
-                    String name = jsonResponse.getJSONObject(0).getString("name");
-                    String email = jsonResponse.getJSONObject(0).getString("email");
-                    String location = jsonResponse.getJSONObject(0).getString("location");
-                    String level = jsonResponse.getJSONObject(0).getString("level");
-                    imageView.setImageBitmap(bitmap);
-                    nameText.setText(name);
-                    emailText.setText(email);
-                    if(level.equals("1")) {
-                        seekBar.setProgress(16);
-                    }
-                    if(level.equals("2")) {
-                        seekBar.setProgress(49);
-                    }
-                    if(level.equals("3")) {
-                        seekBar.setProgress(82);
-                    }
-                    locationBtn.setText("관심지역: "+location);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        PersonalInfoRequest personalInfoRequest = new PersonalInfoRequest(userId, responseListener);
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        queue.add(personalInfoRequest);
-
-
 
         return v;
     }
@@ -194,6 +175,7 @@ public class MyPageFragment extends Fragment {
         public void onClick(View v){
             Toast.makeText(getContext(), "관심지역이 서울로 설정되었습니다", Toast.LENGTH_SHORT).show();
             locationBtn.setText("관심지역: "+"서울");
+            SaveSharedPreference.setCity(getContext(), "서울");
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -205,16 +187,17 @@ public class MyPageFragment extends Fragment {
             customDialog.dismiss();
         }
     };
-    private View.OnClickListener jejuListener = new View.OnClickListener(){
+    private View.OnClickListener daeguListener = new View.OnClickListener(){
         public void onClick(View v){
-            Toast.makeText(getContext(), "관심지역이 제주로 설정되었습니다", Toast.LENGTH_SHORT).show();
-            locationBtn.setText("관심지역: "+"제주");
+            Toast.makeText(getContext(), "관심지역이 대구주로 설정되었습니다", Toast.LENGTH_SHORT).show();
+            locationBtn.setText("관심지역: "+"대구");
+            SaveSharedPreference.setCity(getContext(), "대구");
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                 }
             };
-            ChangeAreaRequest changeAreaRequest = new ChangeAreaRequest(userId, "제주", responseListener);
+            ChangeAreaRequest changeAreaRequest = new ChangeAreaRequest(userId, "대구", responseListener);
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(changeAreaRequest);
             customDialog.dismiss();
@@ -224,6 +207,7 @@ public class MyPageFragment extends Fragment {
         public void onClick(View v){
             Toast.makeText(getContext(), "관심지역이 대전으로 설정되었습니다", Toast.LENGTH_SHORT).show();
             locationBtn.setText("관심지역: "+"대전");
+            SaveSharedPreference.setCity(getContext(), "대전");
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -239,6 +223,7 @@ public class MyPageFragment extends Fragment {
         public void onClick(View v){
             Toast.makeText(getContext(), "관심지역이 부산으로 설정되었습니다", Toast.LENGTH_SHORT).show();
             locationBtn.setText("관심지역: "+"부산");
+            SaveSharedPreference.setCity(getContext(), "부산");
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {

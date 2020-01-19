@@ -21,7 +21,7 @@
             app:srcCompat="@drawable/seoul" />
 
         <ImageButton
-            android:id="@+id/jeju"
+            android:id="@+id/daegu"
             android:layout_width="194dp"
             android:layout_height="194dp"
             android:layout_weight="1"
