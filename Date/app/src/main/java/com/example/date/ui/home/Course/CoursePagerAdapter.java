@@ -2,6 +2,7 @@ package com.example.date.ui.home.Course;
 
 import android.content.Context;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
 //    private static final int[] TAB_TITLES = new int[]{R.string.course_tab_text_1, R.string.course_tab_text_2};
     private static ArrayList<Place> spots = new ArrayList<>();
     private static ArrayList<View> views;
+    private static String type;
     private LayoutInflater inflater;
 
     public CoursePagerAdapter(FragmentManager fm) {
@@ -53,16 +55,26 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position==0) {
-            return new CourseStartFragment();
+            Log.d("START ITEM", "");
+            return CourseStartFragment.newInstance(position, type);
         } else if (position==(spots.size()+1)) {
-            return new CourseEndFragment();
+            Log.d("END ITEM", "");
+            return CourseEndFragment.newInstance(position, spots);
         } else {
-            return new CourseDetailFragment();
+            Log.d("DETAIL ITEM", "");
+            return CourseDetailFragment.newInstance(position, spots.get(position-1));
         }
     }
 
     public void setSpots(ArrayList<Place> spots) {
         this.spots = spots;
+        Log.d("SET SPOTS", "");
+        notifyDataSetChanged();
+    }
+    public void setType(String type) {
+        this.type = type;
+        Log.d("SET TYPE", "");
+        notifyDataSetChanged();
     }
 //    @Override
 //    public Object instantiateItem(ViewGroup container, int position) {

@@ -9,17 +9,20 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.date.R;
+import com.google.android.libraries.places.api.model.Place;
 
 public class CourseDetailFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private TextView textView;
+    private Place spot;
 
-    public static CourseStartFragment newInstance(int index) {
-        CourseStartFragment fragment = new CourseStartFragment();
+    public static CourseDetailFragment newInstance(int index, Place spot) {
+        CourseDetailFragment fragment = new CourseDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
+        fragment.setSpot(spot);
         return fragment;
     }
 
@@ -37,6 +40,10 @@ public class CourseDetailFragment extends Fragment {
         textView = (TextView) root.findViewById(R.id.spotName);
         textView.setText("spot name");
         return root;
+    }
+
+    public void setSpot(Place spot) {
+        this.spot = spot;
     }
 }
 

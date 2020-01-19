@@ -39,6 +39,9 @@ public class CourseActivity extends AppCompatActivity {
         /*------------ uncomment below if courseInformation is successfully passed -----------*/
 //        courseInformation = (CourseInformation) getIntent().getSerializableExtra("courseInformation");
 
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        TabLayout tabs = findViewById(R.id.tabs);
+        views = new ArrayList<>();
 
         /*------------ temporal courseInformation setting : delete later ---------------------*/
         ArrayList<String> places = new ArrayList<>();
@@ -54,7 +57,10 @@ public class CourseActivity extends AppCompatActivity {
         /*---------------------- setting spot list using PlaceAPI ---------------------------*/
         Places.initialize(getApplicationContext(), apiKey);
         PlacesClient placesClient = Places.createClient(this);
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+        List<Place.Field> placeFields = Arrays.asList(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.LAT_LNG);
 
         spots = new ArrayList<>();
         ArrayList<String> placeList = courseInformation.getPlaceList();
@@ -66,6 +72,15 @@ public class CourseActivity extends AppCompatActivity {
                 Place place = response.getPlace();
                 Log.d("Place", "Name: "+place.getName());
                 spots.add(place);
+
+                if (spots.size()==placeList.size()) {
+                    coursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
+                    coursePagerAdapter.setSpots(spots);
+                    coursePagerAdapter.setType(courseInformation.getPurpose());
+                    viewPager.setAdapter(coursePagerAdapter);
+                    tabs.setupWithViewPager(viewPager);
+                }
+
             }).addOnFailureListener((exception) -> {
                 if (exception instanceof ApiException) {
                     ApiException apiException = (ApiException) exception;
@@ -76,15 +91,16 @@ public class CourseActivity extends AppCompatActivity {
         }
 
         /*---------------------- setting ViewPager ---------------------------*/
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        TabLayout tabs = findViewById(R.id.tabs);
-        views = new ArrayList<>();
-
-        coursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
-        coursePagerAdapter.setSpots(spots);
-        viewPager.setAdapter(coursePagerAdapter);
-
-        tabs.setupWithViewPager(viewPager);
+//        ViewPager viewPager = findViewById(R.id.view_pager);
+//        TabLayout tabs = findViewById(R.id.tabs);
+//        views = new ArrayList<>();
+//
+//        coursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
+//        coursePagerAdapter.setSpots(spots);
+//        coursePagerAdapter.setType(courseInformation.getPurpose());
+//        viewPager.setAdapter(coursePagerAdapter);
+//
+//        tabs.setupWithViewPager(viewPager);
 
 //        // adding page
 //        views.add(position, viewToBeAdded);
