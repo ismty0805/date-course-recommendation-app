@@ -60,8 +60,8 @@ public class CourseDetailFragment extends Fragment {
         PlacesClient placesClient = Places.createClient(getContext());
         PhotoMetadata photoMetadata = spot.getPhotoMetadatas().get(0);
         FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                .setMaxHeight(1000)
-                .setMaxWidth(1000)
+                .setMaxHeight(500)
+                .setMaxWidth(500)
                 .build();
         placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
             Bitmap bitmap = fetchPhotoResponse.getBitmap();

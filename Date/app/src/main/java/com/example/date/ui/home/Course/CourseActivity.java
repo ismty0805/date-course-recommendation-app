@@ -75,18 +75,23 @@ public class CourseActivity extends AppCompatActivity {
                 Place.Field.ADDRESS
                 );
 
-        spots = new ArrayList<>();
         ArrayList<String> placeList = courseInformation.getPlaceList();
+        int size = placeList.size();
+        Log.d("SIZE", size+"");
+        spots = new ArrayList<>();
 
-        for (String placeID : placeList) {
+        for (int i=0; i<size; i++) {
+            spots.add(null);
+            String placeID = placeList.get(i);
             FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeID, placeFields);
 
+            int finalI = i;
             placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
                 Place place = response.getPlace();
                 Log.d("Place", "Name: "+place.getName());
-                spots.add(place);
+                spots.set(finalI, place);
 
-                if (spots.size()==placeList.size()) {
+                if (!spots.contains(null)) {
                     coursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
                     coursePagerAdapter.setSpots(spots);
                     coursePagerAdapter.setType(courseInformation.getPurpose());
