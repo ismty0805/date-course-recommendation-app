@@ -29,6 +29,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
 
 //    private static final int[] TAB_TITLES = new int[]{R.string.course_tab_text_1, R.string.course_tab_text_2};
     private static ArrayList<Place> spots = new ArrayList<>();
+    private static ArrayList<String> comments = new ArrayList<>();
     private static ArrayList<View> views;
     private static String type;
     private LayoutInflater inflater;
@@ -62,18 +63,20 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
             return CourseEndFragment.newInstance(position, spots);
         } else {
             Log.d("DETAIL ITEM", "");
-            return CourseDetailFragment.newInstance(position, spots.get(position-1));
+            return CourseDetailFragment.newInstance(position, spots.get(position-1), comments.get(position-1));
         }
     }
 
     public void setSpots(ArrayList<Place> spots) {
         this.spots = spots;
-        Log.d("SET SPOTS", "");
+        notifyDataSetChanged();
+    }
+    public void setComments(ArrayList<String> comments) {
+        this.comments = comments;
         notifyDataSetChanged();
     }
     public void setType(String type) {
         this.type = type;
-        Log.d("SET TYPE", "");
         notifyDataSetChanged();
     }
 //    @Override

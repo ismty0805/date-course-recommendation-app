@@ -28,6 +28,7 @@ public class CourseActivity extends AppCompatActivity {
     private CoursePagerAdapter coursePagerAdapter;
 
     private ArrayList<Place> spots;
+    private ArrayList<String> comments;
     private CourseInformation courseInformation;
     private String apiKey = "AIzaSyCWL29hG8BAnMUbNN6HRt3wgUm3JBpCJ_s";
 
@@ -48,10 +49,17 @@ public class CourseActivity extends AppCompatActivity {
         places.add("ChIJV8hePn5MZTURC-4taEqIEG4"); // 칸스테이크하우스
         places.add("ChIJsb73koNLZTURMgCTIa_D95A"); // CGV 유성온천점
         places.add("ChIJh4qkaZxLZTUR3jIRP5tHcu4"); // 봉명가든
+
+        ArrayList<String> comments = new ArrayList<>();
+        comments.add("짱맛 스테이크하우스");
+        comments.add("영화만 보세요");
+        comments.add("아직도 안 가봤어? 루프탑 카페");
+
         courseInformation = new CourseInformation();
         courseInformation.setCity("Daejeon");
         courseInformation.setLevel(3);
         courseInformation.setPlaceList(places);
+        courseInformation.setCommentList(comments);
         courseInformation.setPurpose("Formula");
 
         /*---------------------- setting spot list using PlaceAPI ---------------------------*/
@@ -60,7 +68,12 @@ public class CourseActivity extends AppCompatActivity {
         List<Place.Field> placeFields = Arrays.asList(
                 Place.Field.ID,
                 Place.Field.NAME,
-                Place.Field.LAT_LNG);
+                Place.Field.LAT_LNG,
+                Place.Field.ADDRESS,
+                Place.Field.PHONE_NUMBER,
+                Place.Field.PHOTO_METADATAS,
+                Place.Field.ADDRESS
+                );
 
         spots = new ArrayList<>();
         ArrayList<String> placeList = courseInformation.getPlaceList();
@@ -77,6 +90,7 @@ public class CourseActivity extends AppCompatActivity {
                     coursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
                     coursePagerAdapter.setSpots(spots);
                     coursePagerAdapter.setType(courseInformation.getPurpose());
+                    coursePagerAdapter.setComments(courseInformation.getCommentList());
                     viewPager.setAdapter(coursePagerAdapter);
                     tabs.setupWithViewPager(viewPager);
                 }
