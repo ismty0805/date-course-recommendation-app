@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.date">
+
+    <application>
+        <meta-data
+            android:name="com.firebase.ml.cloud.ApiKeyForDebug"
+            android:value="AIzaSyAZ_4jN-Pj4f-EnHVS-dqWGNr5ZmgQsKSw" />
+    </application>
+
+</manifest>
