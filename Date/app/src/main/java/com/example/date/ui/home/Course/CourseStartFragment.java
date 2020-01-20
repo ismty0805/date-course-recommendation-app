@@ -18,12 +18,14 @@ public class CourseStartFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private TextView textView;
+    private String type;
 
-    public static CourseStartFragment newInstance(int index) {
+    public static CourseStartFragment newInstance(int index, String type) {
         CourseStartFragment fragment = new CourseStartFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
+        fragment.setType(type);
         return fragment;
     }
 
@@ -39,7 +41,11 @@ public class CourseStartFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_course_start, container, false);
 
         textView = (TextView) root.findViewById(R.id.courseStartText);
-        textView.setText("start text");
+        textView.setText(type);
         return root;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

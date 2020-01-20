@@ -8,6 +8,7 @@ public class CourseInformation implements Serializable {
     private ArrayList<String> latitudeList = new ArrayList<>();
     private ArrayList<String> longitudeList = new ArrayList<>();
     private ArrayList<String> placeList = new ArrayList<>();
+    private ArrayList<String> commentList = new ArrayList<>();
     private int level = 1;
     private String city = "";
     private String purpose = "";
@@ -23,6 +24,9 @@ public class CourseInformation implements Serializable {
     }
     public void setPlaceList(ArrayList<String> placeList) {
         this.placeList = placeList;
+    }
+    public void setCommentList(ArrayList<String> commentList) {
+        this.commentList = commentList;
     }
     public void setLevel(int level) {
         this.level = level;
@@ -43,6 +47,9 @@ public class CourseInformation implements Serializable {
     }
     public ArrayList<String> getPlaceList() {
         return placeList;
+    }
+    public ArrayList<String> getCommentList() {
+        return commentList;
     }
     public int getLevel() {
         return level;

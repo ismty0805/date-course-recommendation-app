@@ -165,12 +165,10 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
 
     private void makeMarker() {
         for (Place spot : spots) {
-            Log.d("asdf", ""+spot.getLatLng());
-//            LatLng location = new LatLng(Float.valueOf(spot.getLatitude()), Float.valueOf(spot.getLongitude()));
-
             MarkerOptions markerOptions = new MarkerOptions();
-//            markerOptions.position(location);
+            markerOptions.position(spot.getLatLng());
             markerOptions.title(spot.getName());
+
             BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.jeju);
             Bitmap b = bitmapdraw.getBitmap();
             Bitmap smallMarker = Bitmap.createScaledBitmap(b, 80, 80, false);
