@@ -108,7 +108,8 @@ public class NotificationsFragment extends Fragment {
     private TextView OCRText;
     private Boolean addFlag;
     private TextView textView;
-    private String result;
+    private String meetResultText;
+    private String meetText;
     private com.google.api.services.calendar.Calendar mService = null;
     private int mID = 0;
     GoogleAccountCredential mCredential;
@@ -118,7 +119,7 @@ public class NotificationsFragment extends Fragment {
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {CalendarScopes.CALENDAR};
-    private Calendar dateCalender;
+    private Calendar dateCalender = java.util.Calendar.getInstance();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              final ViewGroup container, Bundle savedInstanceState) {
@@ -169,7 +170,22 @@ public class NotificationsFragment extends Fragment {
                             String text = block.getText();
                             recogTexts.add(text);
                         }
+                        meetText = recogTexts.get(recogTexts.size()-3);
                         Log.d("TEXT", recogTexts.toString());
+                        new Thread(){
+                            public void run(){
+                                List<String> list = JavaTwitterKoreanTextExample.main(meetText);
+                                Log.d("result", ""+list);
+                                Message msg = handler.obtainMessage();
+                                if(list.contains("만나다")||list.contains("보다")||list.contains("가다")){
+                                    Map<String, Integer> timeList = getMeeting(list);
+                                    Log.d("일정: ", ""+timeList);
+                                    meetResultText = meetingResult(timeList);
+                                    handler.sendMessage(msg);
+                                }
+                            }
+                        }.start();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -225,23 +241,10 @@ public class NotificationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         textView = view.findViewById(R.id.meet);
-        new Thread(){
-            public void run(){
-                List<String> list = JavaTwitterKoreanTextExample.main("내일 5시에 만나");
-                Log.d("result", ""+list);
-                Message msg = handler.obtainMessage();
-                if(list.contains("만나다")||list.contains("보다")||list.contains("가다")){
-                    Map<String, Integer> timeList = getMeeting(list);
-                    Log.d("일정: ", ""+timeList);
-                    result = meetingResult(timeList);
-                    handler.sendMessage(msg);
-                }
-            }
-        }.start();
     }
     final Handler handler = new Handler(){
         public void handleMessage(Message msg){
-            textView.setText(result);
+            textView.setText(meetResultText);
             mID =2;
             getResultsFromApi();
         }
@@ -614,9 +617,9 @@ public class NotificationsFragment extends Fragment {
             }
 
             Event event = new Event()
-                    .setSummary(result)
+                    .setSummary(meetResultText)
                     .setLocation(SaveSharedPreference.getCity(getContext()))
-                    .setDescription(result);
+                    .setDescription(meetResultText);
 
 
             java.util.Calendar calander;
@@ -626,8 +629,8 @@ public class NotificationsFragment extends Fragment {
             //simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.KOREA);
             // Z에 대응하여 +0900이 입력되어 문제 생겨 수작업으로 입력
             simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
-            String datetime = simpledateformat.format(calander.getTime());
-
+            String datetime = simpledateformat.format(dateCalender.getTime());
+            Log.d("datetime", datetime+"");
             DateTime startDateTime = new DateTime(datetime);
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
@@ -666,6 +669,7 @@ public class NotificationsFragment extends Fragment {
         Integer min =0;
         Boolean nextFlag = false;
         Boolean nextWeekFlag = false;
+        Integer afternoon = 0;
         Calendar currentCalendar = Calendar.getInstance();
         Log.d("today", ""+currentCalendar);
         Map<String, Integer> result = new HashMap<String, Integer>();
@@ -683,8 +687,13 @@ public class NotificationsFragment extends Fragment {
             else if(s.charAt(s.length()-1) == '분'){
                 min = Integer.valueOf(s.substring(0, s.length()-1));
             }
+            else if(s.equals("오전")||s.equals("아침")) afternoon = 1;
+            else if(s.equals("오후")||s.equals("저녁")) afternoon = 2;
             else if((s.equals("내일")||s.equals("낼"))&&(!list.contains("모레"))){
                 day = currentCalendar.get(Calendar.DAY_OF_MONTH)+1;
+            }
+            else if(s.equals("오늘")){
+                day = currentCalendar.get(Calendar.DAY_OF_MONTH);
             }
             else if(s.equals("모레")){
                 day = currentCalendar.get(Calendar.DAY_OF_MONTH)+2;
@@ -722,6 +731,19 @@ public class NotificationsFragment extends Fragment {
                 Log.d("the day is ", ""+day);
                 nextWeekFlag = false;
             }
+            else if(!nextWeekFlag){
+                int temp=0;
+                if(s.equals("일요일")) temp=1;
+                else if(s.equals("월요일")) temp=2;
+                else if(s.equals("화요일")) temp=3;
+                else if(s.equals("수요일")) temp=4;
+                else if(s.equals("목요일")) temp=5;
+                else if(s.equals("금요일")) temp=6;
+                else if(s.equals("토요일")) temp=7;
+                int today = currentCalendar.get(Calendar.DAY_OF_WEEK);
+                if(temp!=0 && temp>today) day =currentCalendar.get(Calendar.DAY_OF_MONTH)+temp-today;
+                else if(temp!=0 && temp<=today) day = currentCalendar.get(Calendar.DAY_OF_MONTH)+temp-today+7;
+            }
         }
         if(month==0){
             Log.d("why", ""+month);
@@ -732,17 +754,30 @@ public class NotificationsFragment extends Fragment {
             }
             Log.d("why", ""+month);
         }
+        if(afternoon==0){
+            if(time<8){
+                afternoon=2;
+            }
+        }
+
         result.put("월", month);
         result.put("일", day);
         result.put("시", time);
         result.put("분", min);
-//        dateCalender.set(currentCalendar.get(Calendar.YEAR), currentCalendar)
+        result.put("오후", afternoon);
+        if(afternoon==2) time+=12;
+        dateCalender.set(currentCalendar.get(Calendar.YEAR), month-1, day, time, min);
         return result;
     }
     private String meetingResult(Map<String, Integer> timeList){
         String result="데이트: ";
         if(timeList.get("월")!=0) result = result+timeList.get("월").toString()+"월 ";
         if(timeList.get("일")!=0) result = result+timeList.get("일").toString()+"일 ";
+        if(timeList.get("오후")!=0) {
+            if(timeList.get("오후")==1) result = result + "오전 ";
+
+            else if(timeList.get("오후")==2) result = result + "오후 ";
+        }
         if(timeList.get("시")!=0) result = result+timeList.get("시").toString()+"시 ";
         if(timeList.get("분")!=0) result = result+timeList.get("분").toString()+"분 ";
         return result;
