@@ -58,7 +58,7 @@ public class CourseActivity extends AppCompatActivity {
 
         spots = new ArrayList<>();
         ArrayList<String> placeList = courseInformation.getPlaceList();
-
+        Log.d("placelist", ""+placeList);
         for (String placeID : placeList) {
             FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeID, placeFields);
 
@@ -74,6 +74,7 @@ public class CourseActivity extends AppCompatActivity {
                 }
             });
         }
+        Log.d("spots", ""+spots);
 
         /*---------------------- setting ViewPager ---------------------------*/
         ViewPager viewPager = findViewById(R.id.view_pager);
