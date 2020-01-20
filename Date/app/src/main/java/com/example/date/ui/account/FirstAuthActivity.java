@@ -1,5 +1,6 @@
 package com.example.date.ui.account;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,6 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.date.MainActivity;
 import com.example.date.R;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.List;
 
 
 public class FirstAuthActivity extends AppCompatActivity {
@@ -17,7 +22,7 @@ public class FirstAuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        getPermission();
         if (SaveSharedPreference.getUserID(FirstAuthActivity.this).length() == 0) {
             intent = new Intent(FirstAuthActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -29,5 +34,25 @@ public class FirstAuthActivity extends AppCompatActivity {
             this.finish();
         }
     }
+    private void getPermission() {
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service. Please turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                .check();
+    }
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            //Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(List<String> deniedPermissions) {
+            //Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }

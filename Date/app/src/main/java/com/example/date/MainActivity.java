@@ -4,10 +4,13 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.date.ui.home.HomeFragment;
 import com.example.date.ui.mypage.MyPageFragment;
+import com.example.date.ui.notifications.JavaTwitterKoreanTextExample;
 import com.example.date.ui.notifications.NotificationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.gun0912.tedpermission.PermissionListener;
@@ -21,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new Thread(){
+            public void run(){
+                List<String> list = JavaTwitterKoreanTextExample.main("내가 그린 기린 그림은 잘 그린 기린 그림이고 니가 그린 기린 그림은 잘 못 그린 기린 그림이다.");
+                }
+        }.start();
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -69,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("If you reject permission,you can not use this service. Please turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
                 .check();
     }
 

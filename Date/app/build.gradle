@@ -41,5 +41,16 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.0.0'
     implementation 'gun0912.ted:tedpermission:2.2.2'
-    implementation 'com.ibm.watson:tone-analyzer:8.2.1'
+    implementation 'com.rmtheis:tess-two:9.0.0'
+    implementation 'com.twitter.penguin:korean-text:4.4.4'
+    implementation 'androidx.media:media:1.0.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'pub.devrel:easypermissions:0.3.0'
+    implementation('com.google.api-client:google-api-client-android:1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-calendar:v3-rev235-1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
 }
