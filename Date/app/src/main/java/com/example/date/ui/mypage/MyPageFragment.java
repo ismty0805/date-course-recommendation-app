@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.date.MainActivity;
 import com.example.date.R;
+import com.example.date.ui.account.LoginActivity;
 import com.example.date.ui.account.SaveSharedPreference;
 
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ public class MyPageFragment extends Fragment {
     private ArrayList<ProgressItem> progressItemArrayList;
     private ProgressItem mProgressItem;
     private Button locationBtn;
+    private Button logoutBtn;
     private float totalSpan = 1500;
     private float redSpan = 500;
     private float yellowSpan = 500;
@@ -59,6 +61,16 @@ public class MyPageFragment extends Fragment {
         final TextView nameText = v.findViewById(R.id.name);
         final TextView emailText = v.findViewById(R.id.email);
         locationBtn = v.findViewById(R.id.locationBtn);
+        logoutBtn = v.findViewById(R.id.logoutBtn);
+        logoutBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                SaveSharedPreference.clearUserName(getContext());
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         userId = intent.getStringExtra("userID");
         seekBar = ((CustomSeekBar) v.findViewById(R.id.customSeekBar));
         imageView.setImageBitmap(getBitmapFromString(SaveSharedPreference.getImg(getContext())));

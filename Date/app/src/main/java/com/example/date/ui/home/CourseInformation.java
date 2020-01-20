@@ -5,8 +5,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CourseInformation implements Serializable {
-    private ArrayList<String> latitudeList = new ArrayList<>();
-    private ArrayList<String> longitudeList = new ArrayList<>();
+//    private ArrayList<String> latitudeList = new ArrayList<>();
+//    private ArrayList<String> longitudeList = new ArrayList<>();
     private ArrayList<String> placeList = new ArrayList<>();
     private ArrayList<String> commentList = new ArrayList<>();
     private int level = 1;
@@ -16,12 +16,12 @@ public class CourseInformation implements Serializable {
     public CourseInformation() {}
 
     // setters
-    public void setLatitudeList(ArrayList<String> latitudeList) {
-        this.latitudeList = latitudeList;
-    }
-    public void setLongitudeList(ArrayList<String> longitudeList) {
-        this.longitudeList = longitudeList;
-    }
+//    public void setLatitudeList(ArrayList<String> latitudeList) {
+//        this.latitudeList = latitudeList;
+//    }
+//    public void setLongitudeList(ArrayList<String> longitudeList) {
+//        this.longitudeList = longitudeList;
+//    }
     public void setPlaceList(ArrayList<String> placeList) {
         this.placeList = placeList;
     }
@@ -39,12 +39,12 @@ public class CourseInformation implements Serializable {
     }
 
     // getters
-    public ArrayList<String> getLatitudeList() {
-        return latitudeList;
-    }
-    public ArrayList<String> getLongitudeList() {
-        return longitudeList;
-    }
+//    public ArrayList<String> getLatitudeList() {
+//        return latitudeList;
+//    }
+//    public ArrayList<String> getLongitudeList() {
+//        return longitudeList;
+//    }
     public ArrayList<String> getPlaceList() {
         return placeList;
     }

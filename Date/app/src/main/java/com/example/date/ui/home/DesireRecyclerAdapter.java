@@ -103,30 +103,38 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
         try {
             for (int i=0; i<jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                JSONArray latList = jsonObject.getJSONArray("latitudeArray");
-                JSONArray lngList = jsonObject.getJSONArray("longitudeArray");
+//                JSONArray latList = jsonObject.getJSONArray("latitudeArray");
+//                JSONArray lngList = jsonObject.getJSONArray("longitudeArray");
                 JSONArray placeList = jsonObject.getJSONArray("placeArray");
+                JSONArray commentList = jsonObject.getJSONArray("commentArray");
 
-                ArrayList<String> latitudes = new ArrayList<>();
-                ArrayList<String> longitudes = new ArrayList<>();
+//                ArrayList<String> latitudes = new ArrayList<>();
+//                ArrayList<String> longitudes = new ArrayList<>();
                 ArrayList<String> places = new ArrayList<>();
+                ArrayList<String> comments = new ArrayList<>();
 
-                if (latList != null) {
-                    int len = latList.length();
-                    for (int j=0;j<len;j++){
-                        latitudes.add(latList.get(j).toString());
-                    }
-                }
-                if (lngList != null) {
-                    int len = lngList.length();
-                    for (int k=0;k<len;k++){
-                        longitudes.add(lngList.get(k).toString());
-                    }
-                }
+//                if (latList != null) {
+//                    int len = latList.length();
+//                    for (int j=0;j<len;j++){
+//                        latitudes.add(latList.get(j).toString());
+//                    }
+//                }
+//                if (lngList != null) {
+//                    int len = lngList.length();
+//                    for (int k=0;k<len;k++){
+//                        longitudes.add(lngList.get(k).toString());
+//                    }
+//                }
                 if (placeList != null) {
                     int len = placeList.length();
                     for (int l=0;l<len;l++){
                         places.add(placeList.get(l).toString());
+                    }
+                }
+                if (commentList != null) {
+                    int len = commentList.length();
+                    for (int l=0;l<len;l++){
+                        comments.add(commentList.get(l).toString());
                     }
                 }
 
@@ -137,9 +145,11 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
                 courseInformation.setCity(city);
                 courseInformation.setPurpose(purpose);
                 courseInformation.setLevel(level);
-                courseInformation.setLatitudeList(latitudes);
-                courseInformation.setLongitudeList(longitudes);
-                courseInformation.setLongitudeList(places);
+                courseInformation.setPlaceList(places);
+                courseInformation.setCommentList(comments);
+//                courseInformation.setLatitudeList(latitudes);
+//                courseInformation.setLongitudeList(longitudes);
+//                courseInformation.setLongitudeList(places);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -130,7 +130,6 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(final GoogleMap googleMap) {
 
         mMap = googleMap;
-
         makeMarker();
 
         mMap.setMyLocationEnabled(true);

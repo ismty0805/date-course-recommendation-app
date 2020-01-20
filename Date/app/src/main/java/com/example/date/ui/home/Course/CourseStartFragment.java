@@ -42,6 +42,8 @@ public class CourseStartFragment extends Fragment {
 
         textView = (TextView) root.findViewById(R.id.courseStartText);
         textView.setText(type);
+
+
         return root;
     }
 
