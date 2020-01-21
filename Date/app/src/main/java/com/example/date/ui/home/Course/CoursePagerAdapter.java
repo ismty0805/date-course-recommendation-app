@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.date.R;
+import com.example.date.ui.account.SaveSharedPreference;
 import com.google.android.libraries.places.api.model.Place;
 
 import java.lang.reflect.Array;
@@ -33,6 +34,7 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
     private static ArrayList<View> views;
     private static String type;
     private LayoutInflater inflater;
+    private Context mContext;
 
     public CoursePagerAdapter(FragmentManager fm) {
         super(fm);
@@ -56,13 +58,14 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position==0) {
-            Log.d("START ITEM", "");
             return CourseStartFragment.newInstance(position, type);
         } else if (position==(spots.size()+1)) {
-            Log.d("END ITEM", "");
-            return CourseEndFragment.newInstance(position, spots);
+            if (type.equals("진도") && SaveSharedPreference.getLevel(mContext).equals("3")) {
+                return new DoItYourselfFragment();
+            } else {
+                return CourseEndFragment.newInstance(position, spots);
+            }
         } else {
-            Log.d("DETAIL ITEM", "");
             return CourseDetailFragment.newInstance(position, spots.get(position-1), comments.get(position-1));
         }
     }
@@ -77,6 +80,10 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
     }
     public void setType(String type) {
         this.type = type;
+        notifyDataSetChanged();
+    }
+    public void setContext(Context context) {
+        this.mContext = context;
         notifyDataSetChanged();
     }
     @Nullable

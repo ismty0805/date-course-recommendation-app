@@ -66,6 +66,7 @@ public class CourseActivity extends AppCompatActivity {
             coursePagerAdapter.setSpots(spots);
             coursePagerAdapter.setType(courseInformation.getPurpose());
             coursePagerAdapter.setComments(courseInformation.getCommentList());
+            coursePagerAdapter.setContext(this);
             viewPager.setAdapter(coursePagerAdapter);
             tabs.setupWithViewPager(viewPager);
         }
