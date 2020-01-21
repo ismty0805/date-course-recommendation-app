@@ -42,7 +42,8 @@ public class FirstAuthActivity extends AppCompatActivity {
                         Manifest.permission.INTERNET,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA)
                 .check();
     }
     PermissionListener permissionlistener = new PermissionListener() {
