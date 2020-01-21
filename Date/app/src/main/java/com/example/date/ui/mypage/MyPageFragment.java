@@ -179,23 +179,27 @@ public class MyPageFragment extends Fragment {
                 customDialog.show();
             }
         });
-
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonResponse = new JSONArray(response);
-                    String userImg = jsonResponse.getJSONObject(0).getString("userImg");
-                    Bitmap bitmap = getBitmapFromString(userImg);
-                    imageView.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        new Thread(){
+            public void run(){
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonResponse = new JSONArray(response);
+                            String userImg = jsonResponse.getJSONObject(0).getString("userImg");
+                            Bitmap bitmap = getBitmapFromString(userImg);
+                            imageView.setImageBitmap(bitmap);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                PersonalInfoRequest personalInfoRequest = new PersonalInfoRequest(userId, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(getActivity());
+                queue.add(personalInfoRequest);
             }
-        };
-        PersonalInfoRequest personalInfoRequest = new PersonalInfoRequest(userId, responseListener);
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        queue.add(personalInfoRequest);
+        }.start();
+
 
         return v;
     }
@@ -218,7 +222,7 @@ public class MyPageFragment extends Fragment {
     };
     private View.OnClickListener daeguListener = new View.OnClickListener(){
         public void onClick(View v){
-            Toast.makeText(getContext(), "관심지역이 대구주로 설정되었습니다", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "관심지역이 대구로 설정되었습니다", Toast.LENGTH_SHORT).show();
             locationBtn.setText("관심지역: "+"대구");
             SaveSharedPreference.setCity(getContext(), "대구");
             Response.Listener<String> responseListener = new Response.Listener<String>() {

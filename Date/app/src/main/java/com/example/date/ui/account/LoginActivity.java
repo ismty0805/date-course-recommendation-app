@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String userID = idText.getText().toString();
                 final String userPassword = passwordText.getText().toString();
-
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
 
                     @Override
