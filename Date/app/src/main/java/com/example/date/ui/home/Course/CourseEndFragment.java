@@ -1,6 +1,7 @@
 package com.example.date.ui.home.Course;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
@@ -167,7 +168,7 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
             markerOptions.title(spot.getName());
             midLat+=spot.getLatLng().latitude;
             midLng+=spot.getLatLng().longitude;
-            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.jeju);
+            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.marker);
             Bitmap b = bitmapdraw.getBitmap();
             Bitmap smallMarker = Bitmap.createScaledBitmap(b, 80, 80, false);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
