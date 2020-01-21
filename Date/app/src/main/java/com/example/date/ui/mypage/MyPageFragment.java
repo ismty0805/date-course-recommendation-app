@@ -73,7 +73,7 @@ public class MyPageFragment extends Fragment {
         });
         userId = intent.getStringExtra("userID");
         seekBar = ((CustomSeekBar) v.findViewById(R.id.customSeekBar));
-        imageView.setImageBitmap(getBitmapFromString(SaveSharedPreference.getImg(getContext())));
+        imageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.loading));
         Log.d("name", SaveSharedPreference.getName(getContext()));
         nameText.setText(SaveSharedPreference.getName(getContext()));
         emailText.setText(SaveSharedPreference.getEmail(getContext()));
@@ -179,6 +179,23 @@ public class MyPageFragment extends Fragment {
                 customDialog.show();
             }
         });
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonResponse = new JSONArray(response);
+                    String userImg = jsonResponse.getJSONObject(0).getString("userImg");
+                    Bitmap bitmap = getBitmapFromString(userImg);
+                    imageView.setImageBitmap(bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        PersonalInfoRequest personalInfoRequest = new PersonalInfoRequest(userId, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(personalInfoRequest);
 
         return v;
     }

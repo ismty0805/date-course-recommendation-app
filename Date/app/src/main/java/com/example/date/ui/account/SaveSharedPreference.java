@@ -15,7 +15,7 @@ public class SaveSharedPreference {
     static final String PREF_CITY = "city";
     static final String PREF_NAME = "name";
     static final String PREF_EMAIL = "email";
-    static final String PREF_IMG = "img";
+//    static final String PREF_IMG = "img";
 
     private static SharedPreferences getSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -70,14 +70,14 @@ public class SaveSharedPreference {
     public static String getEmail(Context context) {
         return getSharedPreferences(context).getString(PREF_EMAIL, "");
     }
-    public static void setImg(Context context, String img) {
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(PREF_IMG, img);
-        editor.apply();
-    }
-    public static String getImg(Context context) {
-        return getSharedPreferences(context).getString(PREF_IMG, "");
-    }
+//    public static void setImg(Context context, String img) {
+//        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+//        editor.putString(PREF_IMG, img);
+//        editor.apply();
+//    }
+//    public static String getImg(Context context) {
+//        return getSharedPreferences(context).getString(PREF_IMG, "");
+//    }
 
 
 }

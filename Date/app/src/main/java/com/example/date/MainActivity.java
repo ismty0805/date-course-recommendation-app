@@ -4,14 +4,12 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.date.ui.home.HomeFragment;
 import com.example.date.ui.mypage.MyPageFragment;
-import com.example.date.ui.notifications.JavaTwitterKoreanTextExample;
-import com.example.date.ui.notifications.NotificationsFragment;
+import com.example.date.ui.appointments.JavaTwitterKoreanTextExample;
+import com.example.date.ui.appointments.AppointmentFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -24,20 +22,19 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private HomeFragment homeFragment = new HomeFragment();
     private MyPageFragment myPageFragment = new MyPageFragment();
-    private NotificationsFragment notificationsFragment = new NotificationsFragment();
+    private AppointmentFragment appointmentFragment = new AppointmentFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new Thread(){
             public void run(){
-                List<String> list = JavaTwitterKoreanTextExample.main("내가 그린 기린 그림은 잘 그린 기린 그림이고 니가 그린 기린 그림은 잘 못 그린 기린 그림이다.");
+                List<String> list = JavaTwitterKoreanTextExample.main("내일 보고 만나자 월요일 가자");
                 }
         }.start();
         setContentView(R.layout.activity_main);
