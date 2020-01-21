@@ -65,30 +65,37 @@
         android:max="99"
         android:progress="16"
         android:progressDrawable="@android:color/transparent"
-        android:thumb="@drawable/seek_thumb_normal"
+        android:thumb="@drawable/ic_smile_vector"
         android:thumbOffset="12dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:layout_marginBottom="60dp"
         >
 
         <Button
             android:id="@+id/locationBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="3dp"
             android:layout_marginBottom="40dp"
             android:layout_weight="1"
-            android:background="#5400BCD4" />
+            android:background="#FFFFFF"
+            app:strokeColor="#000000"
+            app:strokeWidth="5dp"/>
 
         <Button
             android:id="@+id/logoutBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="3dp"
             android:layout_marginBottom="40dp"
             android:layout_weight="1"
-            android:background="#5400BCD4"
+            android:background="#FFFFFF"
+            app:strokeColor="#000000"
+            app:strokeWidth="5dp"
             android:text="로그아웃" />
     </LinearLayout>
 

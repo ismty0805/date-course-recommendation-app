@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,6 +75,28 @@ public class MyPageFragment extends Fragment {
         });
         userId = intent.getStringExtra("userID");
         seekBar = ((CustomSeekBar) v.findViewById(R.id.customSeekBar));
+
+
+
+        int height = 100;//seekBar.getMeasuredHeight()*2;
+        int width = height;
+
+        Drawable thumb1 = getResources().getDrawable(R.drawable.smile1);
+        Bitmap bitThumb1 = ((BitmapDrawable)thumb1).getBitmap();
+        Drawable newThumb1 = new BitmapDrawable(getResources(),Bitmap.createScaledBitmap(bitThumb1, width, height, true));
+        newThumb1.setBounds(0, 0, newThumb1.getIntrinsicWidth(), newThumb1.getIntrinsicHeight());
+
+        Drawable thumb2 = getResources().getDrawable(R.drawable.smile2);
+        Bitmap bitThumb2 = ((BitmapDrawable)thumb2).getBitmap();
+        Drawable newThumb2 = new BitmapDrawable(getResources(),Bitmap.createScaledBitmap(bitThumb2, width, height, true));
+        newThumb2.setBounds(0, 0, newThumb2.getIntrinsicWidth(), newThumb2.getIntrinsicHeight());
+
+        Drawable thumb3 = getResources().getDrawable(R.drawable.smile3);
+        Bitmap bitThumb3 = ((BitmapDrawable)thumb3).getBitmap();
+        Drawable newThumb3 = new BitmapDrawable(getResources(),Bitmap.createScaledBitmap(bitThumb3, width, height, true));
+        newThumb3.setBounds(0, 0, newThumb3.getIntrinsicWidth(), newThumb3.getIntrinsicHeight());
+
+
         imageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.loading));
         Log.d("name", SaveSharedPreference.getName(getContext()));
         nameText.setText(SaveSharedPreference.getName(getContext()));
@@ -81,12 +105,15 @@ public class MyPageFragment extends Fragment {
         level = SaveSharedPreference.getLevel(getContext());
         if(level.equals("1")){
             seekBar.setProgress(16);
+            seekBar.setThumb(newThumb1);
         }
         else if(level.equals("2")){
             seekBar.setProgress(49);
+            seekBar.setThumb(newThumb2);
         }
         else if(level.equals("3")){
             seekBar.setProgress(82);
+            seekBar.setThumb(newThumb3);
         }
 
         initDataToSeekbar();
@@ -94,6 +121,16 @@ public class MyPageFragment extends Fragment {
             private int startProgress;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                if (progress<34) {
+                    seekBar.setThumb(newThumb1);
+                }
+                else if (progress<67) {
+                    seekBar.setThumb(newThumb2);
+                }
+                else {
+                    seekBar.setThumb(newThumb3);
+                }
             }
 
             @Override
@@ -104,7 +141,7 @@ public class MyPageFragment extends Fragment {
             public void onStopTrackingTouch(final SeekBar seekBar) {
                 if((seekBar.getProgress()>66) && startProgress<=66){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("경고").setMessage("3단계 설정시 높은 수위의 코스가 추천 될 수 있습니다. 괜찮으시겠습니까?");
+                    builder.setTitle("경고").setMessage("3단계 설정시 추천 코스의 수위를 필터링하지 않습니다. 괜찮으시겠습니까?");
                     builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

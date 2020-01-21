@@ -39,7 +39,7 @@ class CustomSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     protected void onDraw(Canvas canvas) {
         if (mProgressItemsList.size() > 0) {
             int progressBarWidth = getWidth();
-            int progressBarHeight = getHeight()/2;
+            int progressBarHeight = 100;
             int thumboffset = getThumbOffset();
             int lastProgressX = 0;
             int progressItemWidth, progressItemRight;
