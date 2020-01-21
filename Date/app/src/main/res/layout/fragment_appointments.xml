@@ -10,18 +10,19 @@
     <ImageView
         android:id="@+id/OCRImage"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:layout_marginTop="30dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/daejon" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/meet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="50dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:text="카톡 분석중..."
         android:textSize="24sp" />
+
 </LinearLayout>

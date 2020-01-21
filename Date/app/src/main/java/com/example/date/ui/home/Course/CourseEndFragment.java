@@ -151,6 +151,11 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
                                 mMap.moveCamera(cameraUpdate);
                             }else mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
                         }
+                        if(spots.size()!=0) {
+                            LatLng latLng = new LatLng(midLat, midLng);
+                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+                            mMap.moveCamera(cameraUpdate);
+                        }
                     }
                 });
     }
