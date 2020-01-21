@@ -61,6 +61,14 @@ public class CourseActivity extends AppCompatActivity {
         Log.d("SIZE", size+"");
         spots = new ArrayList<>();
 
+        if (size==0) {
+            coursePagerAdapter = new CoursePagerAdapter(getSupportFragmentManager());
+            coursePagerAdapter.setSpots(spots);
+            coursePagerAdapter.setType(courseInformation.getPurpose());
+            coursePagerAdapter.setComments(courseInformation.getCommentList());
+            viewPager.setAdapter(coursePagerAdapter);
+            tabs.setupWithViewPager(viewPager);
+        }
         for (int i=0; i<size; i++) {
             spots.add(null);
             String placeID = placeList.get(i);

@@ -40,7 +40,7 @@ class CustomSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         if (mProgressItemsList.size() > 0) {
             int progressBarWidth = getWidth();
             int progressBarHeight = getHeight()/2;
-            int thumboffset = getThumbOffset();
+            int thumboffset = getThumbOffset()/2;
             int lastProgressX = 0;
             int progressItemWidth, progressItemRight;
             for (int i = 0; i < mProgressItemsList.size(); i++) {

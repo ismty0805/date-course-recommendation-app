@@ -27,6 +27,7 @@ public class CourseDetailFragment extends Fragment {
     private TextView commentText;
     private TextView rateText;
     private TextView addressText;
+    private TextView uri;
     private ImageView spotImage;
     private Place spot;
     private String comment;
@@ -57,7 +58,7 @@ public class CourseDetailFragment extends Fragment {
         rateText=(TextView) root.findViewById(R.id.spotRate);
         addressText = (TextView) root.findViewById(R.id.address);
         spotImage = (ImageView) root.findViewById(R.id.spotImage);
-
+        uri = (TextView) root.findViewById(R.id.uri);
         nameText.setText(spot.getName());
         commentText.setText(comment);
         if (!(spot.getRating()==null)) {
@@ -66,6 +67,10 @@ public class CourseDetailFragment extends Fragment {
         }
         if(!(spot.getAddress()==null)) {
             addressText.setText(spot.getAddress());
+            addressText.setVisibility(View.VISIBLE);
+        }
+        if(!(spot.getWebsiteUri()==null)){
+            uri.setText(spot.getWebsiteUri().toString());
             addressText.setVisibility(View.VISIBLE);
         }
         PlacesClient placesClient = Places.createClient(getContext());
