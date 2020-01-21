@@ -1,6 +1,7 @@
 package com.example.date.ui.home.Course;
 
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -40,7 +41,8 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private TextView textView;
-
+    private double midLat;
+    private double midLng;
     private MapView mapView;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -143,6 +145,11 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             setCurrentLocation(location);
+                            LatLng latLng = new LatLng(midLat, midLng);
+                            if(spots.size()!=0) {
+                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+                                mMap.moveCamera(cameraUpdate);
+                            }else mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
                         }
                     }
                 });
@@ -153,7 +160,8 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(spot.getLatLng());
             markerOptions.title(spot.getName());
-
+            midLat+=spot.getLatLng().latitude;
+            midLng+=spot.getLatLng().longitude;
             BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.jeju);
             Bitmap b = bitmapdraw.getBitmap();
             Bitmap smallMarker = Bitmap.createScaledBitmap(b, 80, 80, false);
@@ -162,6 +170,8 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
             Marker marker = mMap.addMarker(markerOptions);
             marker.setTag(spot);
         }
+        midLat=midLat/spots.size();
+        midLng=midLng/spots.size();
     }
 
     public void setCurrentLocation(Location location) {
@@ -177,10 +187,10 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
         mMap.moveCamera(zoom); //animateCamera XX
-        mMap.moveCamera(cameraUpdate);
+//        mMap.moveCamera(cameraUpdate);
     }
 
 

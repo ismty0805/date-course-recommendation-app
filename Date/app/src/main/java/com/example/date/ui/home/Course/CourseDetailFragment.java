@@ -25,6 +25,9 @@ public class CourseDetailFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private TextView nameText;
     private TextView commentText;
+    private TextView rateText;
+    private TextView addressText;
+    private TextView uri;
     private ImageView spotImage;
     private Place spot;
     private String comment;
@@ -52,12 +55,26 @@ public class CourseDetailFragment extends Fragment {
 
         nameText = (TextView) root.findViewById(R.id.spotName);
         commentText = (TextView) root.findViewById(R.id.spotInfo);
+        rateText=(TextView) root.findViewById(R.id.spotRate);
+        addressText = (TextView) root.findViewById(R.id.address);
         spotImage = (ImageView) root.findViewById(R.id.spotImage);
-
+        uri = (TextView) root.findViewById(R.id.uri);
         nameText.setText(spot.getName());
         commentText.setText(comment);
-
+        if (!(spot.getRating()==null)) {
+            rateText.setText(spot.getRating().toString());
+            rateText.setVisibility(View.VISIBLE);
+        }
+        if(!(spot.getAddress()==null)) {
+            addressText.setText(spot.getAddress());
+            addressText.setVisibility(View.VISIBLE);
+        }
+        if(!(spot.getWebsiteUri()==null)){
+            uri.setText(spot.getWebsiteUri().toString());
+            addressText.setVisibility(View.VISIBLE);
+        }
         PlacesClient placesClient = Places.createClient(getContext());
+        Log.d("spots", ""+spot);
         PhotoMetadata photoMetadata = spot.getPhotoMetadatas().get(0);
         FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
                 .setMaxHeight(1000)
