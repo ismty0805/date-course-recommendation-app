@@ -56,13 +56,10 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position==0) {
-            Log.d("START ITEM", "");
             return CourseStartFragment.newInstance(position, type);
         } else if (position==(spots.size()+1)) {
-            Log.d("END ITEM", "");
             return CourseEndFragment.newInstance(position, spots);
         } else {
-            Log.d("DETAIL ITEM", "");
             return CourseDetailFragment.newInstance(position, spots.get(position-1), comments.get(position-1));
         }
     }
@@ -79,6 +76,18 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
         this.type = type;
         notifyDataSetChanged();
     }
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (position==0) {
+            return "TIP";
+        } else if (position==(spots.size()+1)) {
+            return "MAP";
+        } else {
+            return "SPOT"+position;
+        }
+    }
+
 //    @Override
 //    public Object instantiateItem(ViewGroup container, int position) {
 //        View viewLayout;
@@ -109,16 +118,5 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
 //            }
 //        }
 //        return POSITION_NONE;
-//    }
-//
-//    @Override
-//    public CharSequence getPageTitle(int position) {
-//        return position+"";
-//    }
-
-//    @Nullable
-//    @Override
-//    public CharSequence getPageTitle(int position) {
-//        return mContext.getResources().getString(TAB_TITLES[position]);
 //    }
 }

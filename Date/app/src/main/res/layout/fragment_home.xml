@@ -16,12 +16,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/desireTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/desireRecyclerView"
             android:layout_width="match_parent"

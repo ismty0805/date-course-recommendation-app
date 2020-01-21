@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Date</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_activity_date_course">DateCourseActivity</string>
+    <string name="title_home">Courses</string>
+    <string name="title_dashboard">MyPage</string>
+    <string name="title_notifications">Calendar</string>
+    <string name="title_activity_date_course">CourseDetail</string>
     <string name="course_tab_text_1">start</string>
     <string name="course_tab_text_2">end</string>
 

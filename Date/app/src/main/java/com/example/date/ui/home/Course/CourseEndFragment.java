@@ -135,19 +135,6 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-//        mMap.setInfoWindowAdapter(new CustomMarkerInfoWindowView(getContext()));
-//        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-//            @Override
-//            public void onInfoWindowClick(Marker marker) {
-//                Shop shop = (Shop) marker.getTag();
-//                marker.hideInfoWindow();
-//                // move to shop detail activity
-//                Intent intent = new Intent(getActivity(), ShopDetailActivity.class);
-//                intent.putExtra("shop", shop);
-//                startActivity(intent);
-//            }
-//        });
-
         mFusedLocationClient.
                 getLastLocation().
                 addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
@@ -155,7 +142,6 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            // Logic to handle location object
                             setCurrentLocation(location);
                         }
                     }
@@ -188,11 +174,9 @@ public class CourseEndFragment extends Fragment implements OnMapReadyCallback {
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(currentLatLng);
-        //markerOptions.title(markerTitle);
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
 
-        //currentMarker = mMap.addMarker(markerOptions);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
         mMap.moveCamera(zoom); //animateCamera XX
