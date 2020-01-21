@@ -118,6 +118,7 @@ public class AppointmentFragment extends Fragment {
         ).setBackOff(new ExponentialBackOff());
         mID = 1;
         getResultsFromApi();
+
         return v;
     }
 
@@ -182,35 +183,6 @@ public class AppointmentFragment extends Fragment {
         }
         return null;
     }
-
-//    private void processTextBlock(FirebaseVisionText result) {
-//        String resultText = result.getText();
-//        OCRText.setText(resultText);
-//        for (FirebaseVisionText.TextBlock block: result.getTextBlocks()) {
-//            String blockText = block.getText();
-//
-//            Float blockConfidence = block.getConfidence();
-//            List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
-//            Point[] blockCornerPoints = block.getCornerPoints();
-//            Rect blockFrame = block.getBoundingBox();
-//
-//            for (FirebaseVisionText.Line line: block.getLines()) {
-//                String lineText = line.getText();
-//                Float lineConfidence = line.getConfidence();
-//                List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
-//                Point[] lineCornerPoints = line.getCornerPoints();
-//                Rect lineFrame = line.getBoundingBox();
-//
-//                for (FirebaseVisionText.Element element: line.getElements()) {
-//                    String elementText = element.getText();
-//                    Float elementConfidence = element.getConfidence();
-//                    List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
-//                    Point[] elementCornerPoints = element.getCornerPoints();
-//                    Rect elementFrame = element.getBoundingBox();
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

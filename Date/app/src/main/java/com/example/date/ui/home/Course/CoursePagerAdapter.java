@@ -27,24 +27,21 @@ import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
 
 public class CoursePagerAdapter extends FragmentPagerAdapter {
 
-    private static final String[] TAB_TITLES = new String[]{"데이트 시작", "데이트 끝"};
+//    private static final int[] TAB_TITLES = new int[]{R.string.course_tab_text_1, R.string.course_tab_text_2};
     private static ArrayList<Place> spots = new ArrayList<>();
     private static ArrayList<String> comments = new ArrayList<>();
     private static ArrayList<View> views;
     private static String type;
     private LayoutInflater inflater;
-    private Context mContext;
 
     public CoursePagerAdapter(FragmentManager fm) {
         super(fm);
-
     }
 
     @Override
     public int getCount() {
         return spots.size()+2;
     }
-
 
 //    @Override
 //    public boolean isViewFromObject(View view, Object object) {
@@ -82,6 +79,18 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
         this.type = type;
         notifyDataSetChanged();
     }
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (position==0) {
+            return "TIP";
+        } else if (position==(spots.size()+1)) {
+            return "MAP";
+        } else {
+            return "SPOT"+position;
+        }
+    }
+
 //    @Override
 //    public Object instantiateItem(ViewGroup container, int position) {
 //        View viewLayout;
@@ -120,10 +129,8 @@ public class CoursePagerAdapter extends FragmentPagerAdapter {
 //    }
 
 //    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        if(position==0) return TAB_TITLES[0];
-        else if(position==(spots.size()+1)) return TAB_TITLES[1];
-        else return spots.get(position-1).getName();
-    }
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//        return mContext.getResources().getString(TAB_TITLES[position]);
+//    }
 }

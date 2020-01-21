@@ -22,18 +22,8 @@
                 android:layout_height="125dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_launcher_foreground"
+                android:src="@drawable/emoticon_white"
                 />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="오늘의 데이트 장소"
-                android:textColor="#ffffff"
-                android:textSize="25dp"
-                android:textStyle="bold" />
 
         </LinearLayout>
 

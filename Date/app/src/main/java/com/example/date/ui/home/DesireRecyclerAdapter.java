@@ -59,7 +59,7 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
                 holder.desireImage.setImageResource(R.drawable.piece);
                 break;
             case "진도":
-                holder.desireImage.setImageResource(R.drawable.love);
+                holder.desireImage.setImageResource(R.drawable.jindo);
                 break;
             case "휴식":
                 holder.desireImage.setImageResource(R.drawable.chill);
