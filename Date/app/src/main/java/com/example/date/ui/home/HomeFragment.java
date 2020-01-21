@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.date.R;
@@ -24,35 +25,19 @@ import java.util.Arrays;
 public class HomeFragment extends Fragment {
 
     // temporal recyclerview input
-    private String[] arrDesire = {"갈등", "진도", "휴식", "액티비티", "공식", "여행", "이별"};
+    private String[] arrDesire = {"갈등", "진도", "휴식", "공식", "여행", "이별"};
     private ArrayList<String> desires = new ArrayList(Arrays.asList(arrDesire));
     private LayoutInflater inflater;
-    private GridLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private DesireRecyclerAdapter adapter;
     private RecyclerView desireRecyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        Spinner spinner = (Spinner) root.findViewById(R.id.timeSpinner);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         desireRecyclerView = root.findViewById(R.id.desireRecyclerView);
-        layoutManager = new GridLayoutManager(getActivity(), 2);
+        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         adapter = new DesireRecyclerAdapter(desires, inflater, getActivity());
         desireRecyclerView.setAdapter(adapter);
         desireRecyclerView.setLayoutManager(layoutManager);
