@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -62,7 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         final ImageView userImage = findViewById(R.id.userImage);
         final EditText idText = findViewById(R.id.idText);
         final EditText passwordText = findViewById(R.id.passwordText);
