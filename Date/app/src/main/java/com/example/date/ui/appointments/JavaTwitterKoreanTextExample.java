@@ -1,13 +1,9 @@
-package com.example.date.ui.notifications;
-import java.util.ArrayList;
-import java.util.LinkedList;
+package com.example.date.ui.appointments;
 import java.util.List;
 
 import scala.collection.Seq;
 
-import com.twitter.penguin.korean.TwitterKoreanProcessor;
 import com.twitter.penguin.korean.TwitterKoreanProcessorJava;
-import com.twitter.penguin.korean.phrase_extractor.KoreanPhraseExtractor;
 import com.twitter.penguin.korean.tokenizer.KoreanTokenizer;
 
 public class JavaTwitterKoreanTextExample {

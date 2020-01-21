@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (right_userID.equals(userID) && right_userPassword.equals(userPassword)) {
                                     SaveSharedPreference.setUserID(LoginActivity.this, userID);
                                     String level = jsonResponse.getJSONObject(i).getString("level");
-                                    String userImg = jsonResponse.getJSONObject(i).getString("userImg");
+//                                    String userImg = jsonResponse.getJSONObject(i).getString("userImg");
                                     String name = jsonResponse.getJSONObject(i).getString("name");
                                     String email = jsonResponse.getJSONObject(i).getString("email");
                                     String city = jsonResponse.getJSONObject(i).getString("location");
@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                                     SaveSharedPreference.setCity(LoginActivity.this, city);
                                     SaveSharedPreference.setName(LoginActivity.this, name);
                                     SaveSharedPreference.setEmail(LoginActivity.this, email);
-                                    SaveSharedPreference.setImg(LoginActivity.this, userImg);
+//                                    SaveSharedPreference.setImg(LoginActivity.this, userImg);
                                     login = true;
                                     Toast.makeText(LoginActivity.this, "로그인에 성공했습니다", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
