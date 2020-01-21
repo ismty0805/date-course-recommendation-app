@@ -54,8 +54,26 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
     public void onBindViewHolder(@NonNull DesireHolder holder, final int position) {
 
         final String text = desires.get(position);
-        holder.desireText.setText(text);
-        holder.desireImage.setImageResource(R.mipmap.ic_launcher);
+        switch (text) {
+            case "갈등":
+                holder.desireImage.setImageResource(R.drawable.piece);
+                break;
+            case "진도":
+                holder.desireImage.setImageResource(R.drawable.love);
+                break;
+            case "휴식":
+                holder.desireImage.setImageResource(R.drawable.chill);
+                break;
+            case "공식":
+                holder.desireImage.setImageResource(R.drawable.formula);
+                break;
+            case "여행":
+                holder.desireImage.setImageResource(R.drawable.travel);
+                break;
+            case "이별":
+                holder.desireImage.setImageResource(R.drawable.breakup);
+                break;
+        }
         level = SaveSharedPreference.getLevel(mContext);
         city = SaveSharedPreference.getCity(mContext);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -88,13 +106,11 @@ public class DesireRecyclerAdapter extends RecyclerView.Adapter<DesireRecyclerAd
 
     public class DesireHolder extends RecyclerView.ViewHolder {
 
-        private TextView desireText;
         private ImageView desireImage;
 
         public DesireHolder(View itemView) {
             super(itemView);
             desireImage = (ImageView) itemView.findViewById(R.id.desireItemImage);
-            desireText = (TextView) itemView.findViewById(R.id.desireItemText);
         }
     }
 
