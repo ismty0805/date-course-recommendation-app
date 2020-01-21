@@ -25,6 +25,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.date.MainActivity;
 
@@ -97,21 +99,24 @@ public class AppointmentFragment extends Fragment {
     private static final String[] SCOPES = {CalendarScopes.CALENDAR};
     private Calendar dateCalender = java.util.Calendar.getInstance();
     private Uri selectedImageUri;
-
+    private RecyclerView scheduleRecycler;
+    private ArrayList<String> mArraylist;
+    private SimpleTextAdapter madapter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              final ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_appointments, container, false);
 
         OCRImage = v.findViewById(R.id.OCRImage);
-
+//        scheduleRecycler.setLayoutManager(new LinearLayoutManager(v.getContext()));
+//        mArraylist = new ArrayList<String>();
+//        madapter = new SimpleTextAdapter(mArraylist);
+//        scheduleRecycler.setAdapter(madapter);
         // getting the latest screenshot image
         File screenShot = new File(Environment.getExternalStorageDirectory()+"/DCIM/Screenshots");
         File[] files = screenShot.listFiles();
         selectedImageUri = Uri.fromFile(files[files.length-1]);
 
         OCRImage.setImageURI(selectedImageUri);
-
-
 
         FirebaseVisionImage image = imageFromPath(getContext(), selectedImageUri);
         recognizeText(image);
@@ -120,8 +125,14 @@ public class AppointmentFragment extends Fragment {
                 getActivity().getApplicationContext(),
                 Arrays.asList(SCOPES)
         ).setBackOff(new ExponentialBackOff());
+
         mID = 1;
         getResultsFromApi();
+
+//        mID = 3;
+//        getResultsFromApi();
+//        Log.d("arraylist", mArraylist.toString());
+//        madapter.notifyDataSetChanged();
 
         return v;
     }
@@ -193,6 +204,7 @@ public class AppointmentFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         textView = view.findViewById(R.id.meet);
+//        madapter.notifyDataSetChanged();
     }
     final Handler handler = new Handler(){
         public void handleMessage(Message msg){
@@ -395,7 +407,7 @@ public class AppointmentFragment extends Fragment {
 
         private Exception mLastError = null;
         private MainActivity mActivity;
-        List<String> eventStrings = new ArrayList<String>();
+        ArrayList<String> eventStrings = new ArrayList<String>();
 
 
         public MakeRequestTask(MainActivity activity, GoogleAccountCredential credential) {
@@ -425,7 +437,7 @@ public class AppointmentFragment extends Fragment {
             try {
 
                 if ( mID == 1) {
-
+                    Log.d("createcalenderaadsfdafs", "started!!!");
                     return createCalendar();
 
                 }else if (mID == 2) {
@@ -433,7 +445,7 @@ public class AppointmentFragment extends Fragment {
                     return addEvent();
                 }
                 else if (mID == 3) {
-
+                    Log.d("getEvent", "started!!!");
                     return getEvent();
                 }
 
@@ -456,7 +468,7 @@ public class AppointmentFragment extends Fragment {
 
             DateTime now = new DateTime(System.currentTimeMillis());
 
-            String calendarID = getCalendarID("CalendarTitle");
+            String calendarID = getCalendarID("DateCalender");
             if ( calendarID == null ){
 
                 return "캘린더를 먼저 생성하세요.";
@@ -484,6 +496,9 @@ public class AppointmentFragment extends Fragment {
 
                 eventStrings.add(String.format("%s \n (%s)", event.getSummary(), start));
             }
+
+
+
 
 
             return eventStrings.size() + "개의 데이터를 가져왔습니다.";
@@ -574,7 +589,7 @@ public class AppointmentFragment extends Fragment {
             Event event = new Event()
                     .setSummary(calendarText)
                     .setLocation(SaveSharedPreference.getCity(getContext()))
-                    .setDescription(meetResultText);
+                    .setDescription(calendarText);
 
 
             java.util.Calendar calander;
@@ -738,7 +753,7 @@ public class AppointmentFragment extends Fragment {
         return result;
     }
     private String showText(Map<String, Integer> timeList){
-        String result = "";
+        String result = "추가할 일정: ";
         if(timeList.get("월")!=0) result = result+timeList.get("월").toString()+"월";
         if(timeList.get("일")!=0) result = result+" "+timeList.get("일").toString()+"일";
         if(timeList.get("오후")!=0) {
@@ -748,7 +763,6 @@ public class AppointmentFragment extends Fragment {
         }
         if(timeList.get("시")!=0) result = result+" "+timeList.get("시").toString()+"시";
         if(timeList.get("분")!=0) result = result+" "+timeList.get("분").toString()+"분";
-        result = result +"에 일정이 있습니다,  잊지 마세요!";
         return result;
     }
 }

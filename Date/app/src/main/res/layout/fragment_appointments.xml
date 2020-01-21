@@ -7,12 +7,20 @@
     android:orientation="vertical">
 
 
-    <ImageView
-        android:id="@+id/OCRImage"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:layout_marginTop="30dp"
-        android:scaleType="fitCenter" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/OCRImage"
+            android:layout_width="0dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/meet"
@@ -23,6 +31,6 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="카톡 분석중..."
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
 </LinearLayout>
