@@ -66,6 +66,7 @@ app.get('/personalInfo/:userID', function(req, res, next){
     });
 });
 
+
 app.put('/changeArea/:userID', function(req, res, next){
     Login.update({"userID":req.params.userID}, {"location": req.body.location}, function(error, login){
         if(error){
@@ -81,7 +82,7 @@ app.put('/changeLevel/:userID', function(req, res, next){
         if(error){
             return res.json(error);
         }
-        // console.log(""+req.params.location+"\n"+req.body.location+"\n"+req.params.userID+"\n"+req.body.userID);
+        console.log(""+req.params.level+"\n"+req.body.level+"\n"+req.params.userID+"\n"+req.body.userID);
         return res.json(login);
     });
 });
@@ -120,4 +121,79 @@ app.get('/logins/:userID', function(req, res, next){
     }
     return res.send(found);
     });
+});
+
+
+
+
+
+var Schema_course = mongoose.Schema;
+var courseSchema = new Schema_course({
+  placeArray : Array,
+  // latitudeArray : Array,
+  // longitudeArray : Array,
+  commentArray: Array,
+  level : String,
+  purpose : String,
+  city : String
+});
+var Course = mongoose.model("Course", courseSchema);
+app.get('/courses', function (req, res, next){
+  Course.find({}, function (error, login){
+    if (error) {
+      return res.json(error);
+    }
+    return res.json(login);
+    });
+});
+app.get('/courses:/:level', function (req, res, next){
+  Course.find({level: req.params.level}, function (error, login){
+    if (error) {
+      return res.json(error);
+    }
+    return res.json(login);
+    });
+});
+
+app.post('/courses', function(req, res, next){
+  var placeArray = req.body.placeArray;
+  // var latitudeArray = req.body.latitudeArray;
+  // var longitudeArray = req.body.longitudeArray;
+  var commentArray = req.body.commentArray;
+  var level = req.body.level;
+  var purpose = req.body.purpose;
+  var city = req.body.city;
+  var course = Course({
+    placeArray : placeArray,
+    // latitudeArray : latitudeArray,
+    // longitudeArray : longitudeArray,
+    commentArray : commentArray,
+    level : level,
+    purpose : purpose,
+    city : city
+  });
+
+  course.save(function(err){
+    if (err) {
+      return res.json(err);
+    }
+    return res.send("Successfully Created");
+  });
+});
+app.delete('/courses/:id', function (req, res, next){
+  Course.remove({ _id : req.params.id}, function (error, login){
+    if (error) {
+      return res.json(error);
+    }
+    return res.json(login);
+    });
+});
+app.put('/courses', function(req, res, next){
+  Course.find({city: req.body.city, purpose:req.body.purpose, level: req.body.level}, function(error, docs){
+    if(error){
+      return res.json(error);
+    }
+    console.log(""+req.body.city+req.body.purpose+req.body.level)
+    return res.json(docs);  
+  });
 });
