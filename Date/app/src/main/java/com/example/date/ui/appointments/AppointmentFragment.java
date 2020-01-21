@@ -84,6 +84,7 @@ public class AppointmentFragment extends Fragment {
     private Boolean addFlag;
     private TextView textView;
     private String meetResultText;
+    private String calendarText;
     private String meetText;
     private com.google.api.services.calendar.Calendar mService = null;
     private int mID = 0;
@@ -95,6 +96,7 @@ public class AppointmentFragment extends Fragment {
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {CalendarScopes.CALENDAR};
     private Calendar dateCalender = java.util.Calendar.getInstance();
+    private Uri selectedImageUri;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              final ViewGroup container, Bundle savedInstanceState) {
@@ -105,9 +107,11 @@ public class AppointmentFragment extends Fragment {
         // getting the latest screenshot image
         File screenShot = new File(Environment.getExternalStorageDirectory()+"/DCIM/Screenshots");
         File[] files = screenShot.listFiles();
-        Uri selectedImageUri = Uri.fromFile(files[files.length-1]);
+        selectedImageUri = Uri.fromFile(files[files.length-1]);
 
         OCRImage.setImageURI(selectedImageUri);
+
+
 
         FirebaseVisionImage image = imageFromPath(getContext(), selectedImageUri);
         recognizeText(image);
@@ -156,7 +160,8 @@ public class AppointmentFragment extends Fragment {
                                 if(list.contains("만나다")||list.contains("보다")||list.contains("가다")){
                                     Map<String, Integer> timeList = getMeeting(list);
                                     Log.d("일정: ", ""+timeList);
-                                    meetResultText = meetingResult(timeList);
+                                    calendarText = meetingResult(timeList);
+                                    meetResultText = showText(timeList);
                                     handler.sendMessage(msg);
                                 }
                             }
@@ -192,8 +197,11 @@ public class AppointmentFragment extends Fragment {
     final Handler handler = new Handler(){
         public void handleMessage(Message msg){
             textView.setText(meetResultText);
-            mID =2;
-            getResultsFromApi();
+            if (!selectedImageUri.toString().equals(SaveSharedPreference.getUri(getContext()))) {
+                mID =2;
+                getResultsFromApi();
+                SaveSharedPreference.setUri(getContext(), selectedImageUri.toString());
+            }
         }
     };
 
@@ -564,7 +572,7 @@ public class AppointmentFragment extends Fragment {
             }
 
             Event event = new Event()
-                    .setSummary(meetResultText)
+                    .setSummary(calendarText)
                     .setLocation(SaveSharedPreference.getCity(getContext()))
                     .setDescription(meetResultText);
 
@@ -727,6 +735,20 @@ public class AppointmentFragment extends Fragment {
         }
         if(timeList.get("시")!=0) result = result+timeList.get("시").toString()+"시 ";
         if(timeList.get("분")!=0) result = result+timeList.get("분").toString()+"분 ";
+        return result;
+    }
+    private String showText(Map<String, Integer> timeList){
+        String result = "";
+        if(timeList.get("월")!=0) result = result+timeList.get("월").toString()+"월";
+        if(timeList.get("일")!=0) result = result+" "+timeList.get("일").toString()+"일";
+        if(timeList.get("오후")!=0) {
+            if(timeList.get("오후")==1) result = result + " "+"오전";
+
+            else if(timeList.get("오후")==2) result = result + " "+"오후";
+        }
+        if(timeList.get("시")!=0) result = result+" "+timeList.get("시").toString()+"시";
+        if(timeList.get("분")!=0) result = result+" "+timeList.get("분").toString()+"분";
+        result = result +"에 일정이 있습니다,  잊지 마세요!";
         return result;
     }
 }
